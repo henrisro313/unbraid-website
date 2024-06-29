@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+<div class="header">
+    <h1>The Unbraid</h1>
+    <h2>&mdash; A scientific blog on topics in physics and mathematics &mdash;</h2>
+  </div>
+
+  <link rel="stylesheet" href="teststyle.css">
+  
+  <div class="row">
+    <div class="leftcolumn">
+      <div class="card">
+        <h3>Counting loops</h3>
+        <h4>A peek into the world of fully packed loops on a square lattice, June 29, 2024</h4>
+            <p align="justify">
+               Hello, and welcome to my blog! In this (very first!) post I will explore the topic of counting loops on a square lattice, both using exact and numerical (Monte Carlo) methods. 
+               This is a topic that for me developed from curiousity when reading the puzzle page in a Norwegian newspaper, but which developed into a research topic. 
+               Some of the python and fortran code I wrote to generate figures in this post can be found in my <a href="https://github.com/henrisro313/FPLs.git">GitHub repository</a>.
+               I also provide a few references for further reading at the end of the post.
+            </p>
+            <p align="justify">
+               We will consider an open rectangular grid graph \( G = (V, E) \). Recall that a graph is just an ordered pair of vertices (or points), \( V \), and edges (or links), \( E \), each connecting two distinct vertices.
+               A grid graph is a graph that forms a regular tiling, in this case a square tiling with open boundaries.
+               Precisely, let our graph consist of \( \lvert V \rvert = 2m \times 2n \) vertices and \( \lvert E \rvert = 2(4mn - n - m) \) edges connecting nearest neighbour vertices. 
+               [Note that had we instead considered a grid embedded on a torus (periodic boundaries), then there would just have been twice as many edges as vertices.]
+               Imagine now that someone (me) asks you to color every edge either white or blue, but in such a way that every vertex has exactly two blue edges connected to it.
+               If you approach the problem by thinking locally, this means that each vertex, except at corners and edges, looks like one of the following six:
+            </p>
+            <img src="SixVertices.png" width="350" alt="SixV" align="center">
+            <p align="justify">
+               In the end, if you succeed, you will find what is called a <em>fully packed loop configuration</em> (FPL). 
+               As the name suggests, it will be a collection of closed loops (or possibly just one) that completely fill the grid.
+               Here is an example in the case of \( n = m = 8 \) (containing \( \ell = 18 \) loops):
+            </p>
+            <img src="LoopConfig.png" width="400" alt="Config" align="center">
+            <p align="justify">
+               These configurations go by various names in the literature. For instance, in graph theory they are called <em>2-factors</em> (of \( G \)).
+               In statistical mechanics, they are related to two-dimensional ice (like water ice), but also spin ices in a more modern context. 
+               In the rest of this post we will be concerned with the following questions:
+            </p>
+            <p align="left">
+               (A) How many FPLs exist (on a given lattice)?
+            </p>
+            <p align="left">
+               (B) What is the distribution of loops in the FPLs (on a given lattice)?
+            </p>
+            <p align="justify">
+               I will not pretend to be the first to have posed these questions, especially not (A), which has accumulated a lot of interesting history.
+               In particular, for certain boundary conditions, there are beautiful and exact answers to (A).
+               <a href="https://journals.aps.org/pr/abstract/10.1103/PhysRev.162.162">Elliott Lieb famously showed</a> the asymptotic scaling \( \sim {1.5396\dots}^{4n^2} \) for \( m=n \) in 1967.
+               For domain wall boundary conditions there is a mapping to combinatorial objects called alternating sign matrices, which have been <a href="https://arxiv.org/abs/math/9407211">enumerated exactly</a> for \( m = n \) to \( \prod_{k = 0}^{n-1} \frac{(3k+1)!}{(n+k)!} \).
+               We will neither explain, nor derive any of these amazing results, but rather discuss some pragmatic and direct approaches as to how one might go about to count FPLs in a brute force fasion.
+            </p>
+            <p align="justify">
+               First, let us assume that you found one FPL when first given the above task. 
+               We will now look at a recipe to find <em>all</em> the remaining ones. As such, let me introduce you to an operation we will need, the <em>plaquette flip</em>:
+            </p>
+            <img src="Flip.png" width="150" alt="Flip" align="center">
+            <p align="justify">
+               As shown, this operation flips the orientation of two parallel blue lines.
+               On the square lattice it turns out that this single operation is enough to generate <em>all</em> the remaining FPLs, given any single one.
+               That is, repeated applications of plaquette flips is sufficient to generate all possible configurations.
+               So all you need to do is to locate plaquettes in your FPL with parallel blue lines, flip one at random, and keep track of which configurations you have seen before.
+               If you are persitent and keep flipping random plaquettes for long enough, you will have encountered them all.
+               At this point you might find it unsatisfactory that I am not presenting a proof of the above statement. 
+               In which case, I encourage you to first try to prove something simpler, namely that all FPLs must have at least one flippable plaquette on the graph considered. 
+               [Hint: there must always be one not too far from any of the graph corners.] A complete and elegant proof logic can for instance be found in Appendix B of <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.69.064404">this</a> paper. 
+               Coding up this direct strategy in python, making use of the <a href="https://networkx.org">NetworkX</a> package, gives the table below (where in the rightmost column I have partioned the configurations into sectors with a given number of loops \( \ell \)).
+            </p>
+            <style>
+                table, th, td {
+                   border: 1px solid black;
+                   border-collapse: collapse;
+                }
+             </style>
+             <table style="width:80%" align="center">
+                <tr>
+                   <th>Graph</th>
+                   <th>Number of configurations</th>
+                   <th>Loop partitions, \( \lbrace N_{\ell} \rbrace_{\ell = 1}^{mn} \)</th>
+                </tr>
+                <tr>
+                   <th>\( 2 \times 2 \)</th>
+                   <th>\( 1 \)</th>
+                   <th>\( \lbrace 1 \rbrace \)</th>
+                </tr>
+                <tr>
+                   <th>\( 2 \times 4 \)</th>
+                   <th>\( 2 \)</th>
+                   <th>\( \lbrace 1, 1 \rbrace \)</th>
+                </tr>
+                <tr>
+                   <th>\( 2 \times 6 \)</th>
+                   <th>\( 5 \)</th>
+                   <th>\( \lbrace 1, 3, 1 \rbrace \)</th>
+                </tr>
+                <tr>
+                   <th>\( 2 \times 8 \)</th>
+                   <th>\( 13 \)</th>
+                   <th>\( \lbrace 1, 5, 6, 1 \rbrace \)</th>
+                </tr>
+                <tr>
+                   <th>\( 4 \times 4 \)</th>
+                   <th>\( 18 \)</th>
+                   <th>\( \lbrace 6, 7, 4, 1 \rbrace \)</th>
+                </tr>
+                <tr>
+                   <th>\( 4 \times 6 \)</th>
+                   <th>\( 222 \)</th>
+                   <th>\( \lbrace 37, 77, 66, 32, 9, 1 \rbrace \)</th>
+                </tr>
+                <tr>
+                   <th>\( 4 \times 8 \)</th>
+                   <th>\( 2953 \)</th>
+                   <th>\( \lbrace 236, 709, 907, 672, 317, 95, 16, 1 \rbrace \)</th>
+                </tr>
+                <tr>
+                   <th>\( 6 \times 6 \)</th>
+                   <th>\( 13903 \)</th>
+                   <th>\( \lbrace 1072, 3230, 4159, 3140, 1589, 562, 132, 18, 1 \rbrace \)</th>
+                </tr>
+                <tr>
+                   <th>\( 4 \times 10 \)</th>
+                   <th>\( 40043 \)</th>
+                   <th>\( \lbrace 1517, 5969, 10292, 10494, 7108, 3336, 1077, 224, 25, 1 \rbrace \)</th>
+                </tr>
+                <tr>
+                   <th>\( 6 \times 8 \)</th>
+                   <th>\( 972080 \)</th>
+                   <th>\( \lbrace 32675, 130378, 231859, 247769, 180548, 96001, 38411, 11538, 2507, 363, 30, 1 \rbrace \)</th>
+                </tr>
+             </table>
+             <p align="justify">
+               Let us take a look at the \( 4 \times 4 \) case. Here are all the 18 FPLs partitioned into sectors with 1, 2, 3, and 4 loops (ignore the inset in the lower right for now, it will be referred to later):
+             </p>
+             <img src="ConfigsNotation.png" width="480" alt="All4x4">
+             <p align="justify">
+               Starting from any one of these you can convince yourself that you can get to any other by flipping plaquettes. 
+               At this point it can be mentioned that FPLs consisting of a single loop go by the name of <em>Hamiltonian cycles</em> in the graph theory literature. 
+               They have history dating back to 1736 and Euler's problem of the <a href="https://en.wikipedia.org/wiki/Seven_Bridges_of_Königsberg">seven bridges in K&#246;nigsberg</a>, and they are of interest in complexity theory [the Hamiltonian cycle problem is NP-complete].
+               In the present context, impressive efforts in enumerating them have been made, such as by <a href="https://arxiv.org/abs/1402.0545">Ed Wynn</a> who reached lattices of size \( 20 \times 20 \) (sequence no. <a href="https://oeis.org/A209077">A209077</a> in OESIS).
+               Here is what the numbers \( N_{\ell = 1} \) look like as a function of the number of vertices for a \( 2n \times 2n \) graph, with a logarithmic vertical axis [caveat: here configurations related by rotations and reflections have been counted once]:
+             </p>
+             <img src="WynnGrowth2.png" width="450" alt="Wynn">
+             <p align="justify"> 
+               Note that the base in the fit (black line), \(1.426\dots \), is fairly close to Lieb's value, despite the prior number enumerating a quite restricted and non-locally constrained class of configurations, namely those containing a single loop.
+             </p>
+             <p align="justify">
+               We now move on to a stochastic method that can be used to address question (B), in principle on very large systems. [For another stochastic way to sample FPLs, see for instance Appendix D in <a href="https://iopscience.iop.org/article/10.1088/1751-8121/acc76f/meta">this</a> paper.] Concretely, I will first propose a simple function that has FPLs as its lowest-energy configurations. 
+               This function (Hamiltonian) can then be simulated with Monte Carlo methods, providing an unbiased probability distribution for the FPLs. 
+               Sampling this distribution repeatedly, we obtain FPL loop distributions (counting the number of loops in each sampled FPL).
+               Let us start with the function (Hamiltonian). Here it is:
+               \[ H = \sum_{v \in G^{\circ}} \Big( \sum_{e \in A(v)} \sigma_e \Big)^2 + \sum_{v \in \partial G} \Big( \sum_{e \in A(v)} \sigma_e - 1 \Big)^2 + \sum_{v \in \partial^2 G} \Big( \sum_{e \in A(v)} \sigma_e - 2 \Big)^2 \]
+               Let me first explain the function and notation. I have assigned binary variables \( \sigma_e = \pm 1 \) that live on the graph edges: \( \sigma_e = +1 \) is a blue bond, and \( \sigma_e = -1 \) is white bond.
+               The outermost sums in the three terms run over vertices in the interior (\( G^{\circ} \)), edges (\( \partial G \)), and corners (\( \partial^2 G \)) of the graph, respectively, see also the inset in the lower right of the earlier figure.
+               The innermost sums run over edges adjacent to a given vertex \(v\), \(e \in A(v)\).
+               Now, the individual (semi-positive definite) terms square to zero if and only if there are precisely two \( \sigma_e = +1 \) next to the given vertex. [In the interior each vertex has four adjacent edges, three on the edges, and two in the corners.]
+               This local picture coincides with our earlier definition of FPLs, so it should now be evident that all FPLs are indeed the <em>ground states</em> of this Hamiltonian. [Question: can you formulate a function (Hamiltonian) that has only the Hamiltonian cycles as its ground states?]
+             </p>
+             <p align="justify">
+               With the function established, I will outline a simple procedure in which we can pull random FPLs out of a hat (that is, a pseudo-random number generator).
+               The idea will be the following. We start with a completely random initial set of variables \( \lbrace \sigma_e \rbrace \). 
+               Then, the following move is suggested: (\(\star\)) Look at a variable at random and check whether the value of \( H \) is lowered by changing that variable (to blue if it was white, and to white if it was blue).
+               If the energy is not lowered by the proposed change, then we discard the proposal. 
+               If the energy is lowered by the move, on the other hand, we accept the proposal with a probabilty of \( \min\lbrace 1, \exp(- \Delta H / T) \rbrace \), where \( \Delta H \) is the change of \( H \) under the proposed move, and \(T\) is an introduced ''temperature'' (assumed much smaller than 1 in this case).
+               Now, repeating the step (\(\star\)) many times will eventually equilibriate the system in a ground state of \( H \) and hence a FPL.
+               What is outlined here is in essence the <a href="https://en.wikipedia.org/wiki/Metropolis–Hastings_algorithm">Metropolis&mdash;Hastings</a> algorithm, a prime example of a Markov Chain Monte Carlo method.
+             </p>
+             <p align="justify">
+               Implementing the above algorithm and counting the number of loops in the encountered FPL when equilibriating more than \(10^4\) times results in histograms like those displayed below for systems of sizes \(10\times 10\) and \(20\times 20\):
+             </p>
+             <img src="LoopDistributions.png" width="800" alt="Dists">
+             <p align="justify">
+               The resulting loop distributions are seen to be very well described by (teal lines in the figure) \[ p_0(\ell; \alpha, \beta) = \mathcal{N} \ell^{\alpha} \exp(-\beta \ell^2), \] where \( \mathcal{N} = (2\beta^{(1+\alpha)/2})/\Gamma([1+\alpha]/2) \) is the normalization constant, and \( \alpha \) and \(\beta \) are fitting parameters.
+               The distribution \(p_0\) peaks at \( \ell_0 = \sqrt{\alpha/(2\beta)} \), which is plotted after fitting to multiple sampled loop distributions for several \( 2n \times 2n \) grids in the lower panel (green diamonds, left axis). 
+               Note that in the plot I have also divided through by \(n^2\) (the number of vertices scales roughly as \(4n^2\)).
+               The distribution peak per \(n^2\), i.e, the most probable number of loops, is seen to depend weakly on \(n\), suggesting that the peak position scales roughly linearly with the number of grid vertices.
+               The right axis of the same plot (red stars) shows the full width at half maximum (FWHM) of the peak (also per \(n^2\)), which displays a trend very similar to the peak position. 
+               I would be curious to know whether (and what) these numbers, when normalized by the number of vertices, converge (to) in the thermodynamic limit... If you have a clue, I would be grateful to know.
+            </p>
+            <p align="justify">
+               To round off, here is a little Hamiltonian cycle puzzle dressed in recreational variations of <a href="https://en.wikipedia.org/wiki/Jordan_curve_theorem">Jordan's curve theorem</a> for you to ponder upon:
+            </p>
+             <img src="puzzle.png" width="550" alt="puzzle" align="center">
+            <p align="left">
+               <b>References / further reading:</b> <br>
+               \( \circ \) P. Zinn-Justin, <a href="https://arxiv.org/abs/0901.0665"><em>Six-Vertex, Loop and Tiling models: Integrability and Combinatorics</em></a>, habilitation thesis (2009) <br>
+               \( \circ \) O. B.-Panti&#263; and R. To&#353;i&#263;, <a href="https://eudml.org/doc/257956"><em>On the number of 2-factors in rectangular lattice graphs</em></a>, Publications de l'Institut Math&#233;matique. Nouvelle S&#233;rie <b>56</b>, 23-33 (1994) <br>
+               \( \circ \) E. H. Lieb, <a href="https://journals.aps.org/pr/abstract/10.1103/PhysRev.162.162"><em>Residual Entropy of Square Ice</em></a>, Phys. Rev. <b>162</b>, 162 (1967) <br>
+               \( \circ \) D. Zeilberger, <a href="https://arxiv.org/abs/math/9407211"><em>Proof of the Alternating Sign Matrix Conjecture</em></a>, arXiv:math/9407211 (1994) <br>
+               \( \circ \) D. Bressoud and J. Propp <a href="https://www.ams.org/journals/notices/199906/fea-bressoud.pdf?trk=199906fea-bressoud&cat=collection"><em>How the alternating sign matrix conjecture was solved</em></a>, Notices of the AMS <b>46</b>, 637-646 <br>
+               \( \circ \) M. Hermele, M. P. A. Fisher, and L. Balents, <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.69.064404"><em>Pyrochlore photons: The \(U(1)\) spin liquid in a \(S=\frac12\) three-dimensional frustrated magnet</em></a>, Phys. Rev. B <b>69</b>, 064404 (2004) <br>
+               \( \circ \) E. Wynn, <a href="https://arxiv.org/abs/1402.0545"><em>Enumeration of nonisomorphic Hamiltonian cycles on square grid graphs</em></a>, arXiv:1402.0545 (2014) <br>
+               \( \circ \) Z. Zhang and H. S. R&oslash;ising, <a href="https://eudml.org/doc/257956"><em>The frustration-free fully packed loop model</em></a>, J. Phys. A: Math. Theor. <b>56</b> 194001 (2023) <br>
+            </p>
+      </div>
+    </div>
+    <div class="rightcolumn">
+      <div class="card">
+        <h2>About Me</h2>
+        <img src="profile_pic.png" width="128" height="144" alt="Profile">
+        <p> \( \circ \) Patent consultant at <a href=https://hoiberg.com/>H&#216;IBERG P/S</a> </p>
+        <p> \( \circ \) <a href="http://ora.ox.ac.uk/objects/uuid:a8d4270f-a3e5-47cf-ae51-ca718705e31a">DPhil, theoretical physics, 2020</a>  </p>
+        <p> \( \circ \) Physics interests: superconductivity, statistical mechanics, mathematical physics</p>
+        <p> \( \circ \) I enjoy  <a href="http://Numberphile.com">Numberphile</a> </p>
+        <p> \( \circ \) My <a href="http://en.wikipedia.org/wiki/Erd&ouml;s_number">Erd&ouml;s number</a> is 4 </p>
+        <p> \( \circ \) Pop me an email at henrisro[at]proton.me  </p>
+      </div>
+      <div class="card">
+        <h3>Book recommendations</h3>
+        <p> <a href="https://en.wikipedia.org/wiki/Blue_and_Brown_Books"><em>The Blue and Brown Books</em></a> by Ludwig Wittgenstein (1958)</p>
+        <img src="BlueAndBrown.png" width="128" alt="Wittgenstein"><br>
+        <p> <a href="https://en.wikipedia.org/wiki/The_Stranger_(Camus_novel)"><em>The Stranger</em></a> by Albert Camus (1942)</p>
+        <img src="TheStrangerDark.png" width="128" alt="Camus"><br>
+        <p> <a href="http://www-thphys.physics.ox.ac.uk/people/SteveSimon/protobook.html"><em>Topological Quantum</em></a> by Steven H. Simon (2023)</p>
+        <img src="TopoQuantum.png" width="128" alt="TopQuant">
+        <p> <a href="https://www.math.cuhk.edu.hk/course_builder/1920/math4900e/Adams--The%20Knot%20Book.pdf"><em>The Knot Book</em></a> by Colin Adams (1994)</p>
+        <img src="KnotBook.png" width="128" alt="KnotBook">
+        <p> <a href="https://archive.org/details/abrikosov-gorkov-dzyaloshinski-methods-of-quantum-field-theory-in-statistical-physics"><em>Methods of Quantum Field Theory in Statistical Physics</em></a> by A. A. Abrikosov, L. Gor'kov, and I. E. Dzyaloshinski (1963)</p>
+        <img src="AbrikosovGorkov.png" width="128" alt="AbrikosovG">
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    <a href="http://www.linkedin.com/in/henrisro92">LinkedIn</a>
+  </div> 
