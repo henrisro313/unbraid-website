@@ -15,6 +15,135 @@
   <div class="row">
     <div class="leftcolumn">
       <div class="card">
+
+         <h3>Odd zeta function relations</h3>
+         <h4>From superconductivity to (new?) formulas for the zeta function of odd arguments, August 2, 2024</h4>
+
+         <p align="justify">
+            Welcome back! In this post (disclaimer: targeted for the more mathematically inclined reader) I will explore a topic situated somewhere between physics and pure mathematics. 
+            I will tell a little story about how I stumbled across some peculiar, puzzling, and in my opinion aesthetically pleasing relations for the zeta function when I was benchmarking a theory for superconductivity several years ago.
+         </p>
+
+         <p align="justify">
+            Let us start by recapitulating some basic properties of the zeta function.
+            For \( n > 1 \) the zeta function is defined as the infinte sum 
+            \[ \zeta(s) \equiv \sum_{n = 1}^{\infty} \frac{1}{n^s}. \] 
+            Leonhard Euler proved in 1737 (see, e.g., John Derbyshire's <a href="https://www.goodreads.com/book/show/218392.Prime_Obsession"><em>Prime Obsession</em></a>) a staggering connection between the zeta function and the prime numbers: \( 1/\zeta(n) = \prod_{p \; \mathrm{prime}} (1-p^{-n}) \).
+            And Bernhard Riemann demonstrated a connection between the nontrivial zeros of the analytically continued zeta function and the prime counting function in his <a href="https://www.claymath.org/collections/riemanns-1859-manuscript/">landmark paper from 1859</a>.
+            Proving (or disproving) the conjecture that Riemann posed concerning the location of these zeros is by many regarded as the most <a href="https://www.quantamagazine.org/how-i-learned-to-love-and-fear-the-riemann-hypothesis-20210104/">important unsolved problem</a> in pure mathematics today.
+         </p>
+
+         <!-- Tenk på lim her. -->
+
+         <p align="justify">
+            Now, consider the zeta function evaluated at positive integer arguments, \( \zeta(n) \) with \( n \in \mathbb{N} \), since this is what will appear later.
+            It is well known that for <em>even</em> integer arguments the zeta function evaluates to \( \zeta(2n) = (-1)^{n+1} (2\pi)^{2n} B_{2n} /(2 n!) \) where \( B_{2n} \in \mathbb{Q} \) is a <a href="https://en.wikipedia.org/wiki/Bernoulli_number">Bernoulli number</a>.
+            The corresponding situation for <em>odd</em> integer arguments, \( \zeta(2n+1) \), is different as no simple proportionality relation to, e.g., \( \pi^{2n+1} \) exist. For instance, it is not known whether \( \zeta(3) \) is transcendental. 
+            Leonhard Euler found the <a href="http://eulerarchive.maa.org//docs/originals/E432.pdf">series representation (1772)</a>
+            \[ \zeta(3) = \frac{\pi^2}{7} \left( 1 - 4 \sum_{n = 1}^{\infty} \frac{\zeta(2n)}{2^{2n} (2n+1)(2n+2) } \right), \]
+            beautifully relating the zeta function of an odd argument to all the even-argument values. 
+            While the above results are puzzling and mesmerizing in their own right, to a physicist the results gain additional beauty and foothold knowing that particular values of \( \zeta(s) \) commonly appear in physics and statistical mechanics.
+            In the following I will tell you about such a case from my own field of superconductivity and how formulas similar to Euler's popped out.
+         </p>
+
+         <p align="justify">
+            There is no doubt that the Soviet union harboured many influential physicists. One of most famous ones is <a href="https://no.wikipedia.org/wiki/Lev_Landau">Lev Landau</a> (photo source: <a href="https://www.mediastorehouse.com.au/science-photo-library/lev-landau-soviet-physicist-6411380.html">link</a>), who forged a powerful principle for continuous phase transitions.
+            In the early days of superconductivity, theorists were working hard to establish a microscopic theory following <a href="https://en.wikipedia.org/wiki/Heike_Kamerlingh_Onnes">Heike Kamerlingh Onnes'</a> experimental discovery in 1911.
+            The major breakthrough came with Bardeen, Cooper, and Schrieffer's (<a href="https://en.wikipedia.org/wiki/BCS_theory">BCS</a>) theory in 1957.
+            Landau's student, <a href="https://en.wikipedia.org/wiki/Lev_Gor%27kov">Lev Gor'kov</a> (photo source: <a href="https://history.aip.org/phn/11512004.html">link</a>) subsequently succeeded in showing that microscopic version of Landau's theory reproduced essential features of BCS theory.
+         </p>
+
+         <img src="LandauGorkov.png" width="400" alt="Levs">
+
+         <p align="justify"> 
+            In a modernized (generalized) version of the microscopic theory of Gor'kov that I was working on with collaborators in 2020 (reference below) the two following Feynman diagrams are involved in calculating the coefficients of the free energy:
+         </p>
+         <img src="Diagrams.png" width="380" alt="Diagrams">
+         <p align="justify"> 
+            Here, \( \Delta(\boldsymbol{p}) \) is the (form factor of the) superconducting order parameter of relative momentum \( \boldsymbol{p} \), which onsets at the critical temperature \( T_c \).
+            Evaluation of the above Feynman diagrams, assuming a temperature close to the critical temperature \( 1 - T / T_c \ll 1 \), results in the free energy
+            \begin{align}
+               \Delta F &= \alpha(T) \lvert \Delta_0 \rvert^2 + \beta \lvert \Delta_0 \rvert^4, \\
+               \alpha(T) &= - V \int \frac{\mathrm{d} \boldsymbol{p}}{(2\pi)^d}~\Big( \frac{\tanh\left[ \xi(\boldsymbol{p}) / (2T) \right] }{2\xi(\boldsymbol{p})} -\frac{\tanh\left[ \xi(\boldsymbol{p}) / (2T_c) \right]}{2\xi(\boldsymbol{p})} \Big) \Delta(\boldsymbol{p})^2, \\
+               \beta &= \frac{V}{2T^3} \int \frac{\mathrm{d} \boldsymbol{p}}{(2\pi)^d} h( \xi(\boldsymbol{p})/ T ) \Delta(\boldsymbol{p})^4,
+            \end{align}
+            wherein \( h(x) \equiv \frac{\sinh{x}-x}{4x^3(1+\cosh{x})} \), \( \xi(\boldsymbol{p}) \) is the (normal-state) dispersion relation, and \( \Delta_0 \) is the superconducting gap.
+            When I first derived this several years ago, it was crucial to benchmark the result in a known case. 
+            Serving as such, one may consider the simplest case of a constant (&#x2018\(s\)-wave&#x2019) order parameter, \( \Delta(\boldsymbol{p}) = 1 \), and quadratic dispersion, \( \xi(\boldsymbol{p}) = p^2/(2m) \). 
+            This case was originally considered by Gor'kov, who cryptically stated the resulting parameter \( \beta \) in terms of \( \zeta(3) \) (without much detail as to how the calculation was done, a classic feature in the Soviet physics papers).
+            To evaluate the basic integral of interest, \( \frac{1}{2} \int_0^{\infty} \mathrm{d} u~\frac{\sinh{u}-u}{4u^3(1+\cosh{u})} \), let's involve the following known series expansions:
+            \begin{align}
+               \frac{2}{1+\cosh(x)} &= \cosh^{-2}(x/2) = 4e^{-x} \sum_{n=0}^{\infty} (-1)^n (1+n)e^{-nx}, \\
+               \sinh(x)-x &= \frac{\sqrt{\pi}}{2} \sum_{m=1}^{\infty} \frac{x^{2m+1}}{4^m \Gamma(m+1) \Gamma(m+\frac{3}{2})}, \\
+               \sum_{n=0}^{\infty} (-1)^n \frac{1}{(1+n)^x} &= (1-2^{1-x}) \zeta(x),
+            \end{align}
+            where \( \Gamma(n) \) is the <a href="https://en.wikipedia.org/wiki/Gamma_function">Gamma function</a>.
+            Replacing the integrand using the first two relations and carrying out the integral results in a single sum. 
+            Obtaining this sum I thought something along the lines of: &#x2018<em>Well, this nasty sum better be equal to the value obtained by Gor'kov</em>&#x2019 [which is \(\frac{7\zeta(3)}{32\pi^2} \)].
+            And by bluntly equating the obtained sum with the result derived by Gor'kov one finds:
+            \[ \frac{7\zeta(3)}{32\pi^2} = \frac{\sqrt{\pi}}{8} \sum_{l = 1}^{\infty} (1-2^{3-2l}) \frac{\Gamma(2l-1)}{4^l\Gamma(l+1)\Gamma(l+\frac{3}{2})} \zeta(2l-2) \Rightarrow \]
+            \[ \zeta(3) = \frac{8\pi^2}{7} \sum_{n=0}^{\infty} \frac{\left( 1-2\cdot 2^{-2n} \right) \zeta(2n)}{(2n+1)(2n+2)(2n+3)}, \]
+            where \( \zeta(0) = -1/2 \). The series is strikingly similar to Euler's original formula. In fact, both of the summands individually yield a series expansion for \( \zeta(3) \):
+            \begin{align}
+               \zeta(3) &= -\frac{8\pi^2}{5} \sum_{n=0}^{\infty} \frac{\zeta(2n)}{(2n+1)(2n+2)(2n+3) 2^{2n} }, \\
+               \zeta(3) &= -\frac{8\pi^2}{3} \sum_{n=0}^{\infty}  \frac{\zeta(2n) }{(2n+1)(2n+2)(2n+3)}.
+            \end{align}
+            The most rapidly convergent series of the two, along with plenty of other variations, was discovered by Chen and Srivastava in 1998 (reference below). 
+            The latter one, however, does not appear to have been discussed in the published literature.
+         </p>
+
+         <p align="justify">
+            The rest of this post will be concerned with some speculative, yet somewhat intuitive, generalizations of the above result to all of \( \zeta(2n+1) \).
+            As such, I define the function
+            \[ A(n) \equiv (-1)^n \frac{ 2^{2n+1} \pi^{2n}}{2n+1} \sum_{m=0}^{\infty} \frac{\zeta(2m)}{\prod_{j=1}^{2n+1} (2m+j)}. \]
+            Basic manipulations aided by Mathematica reveals that this function can be expressed as a simple weighted sum of \( \lbrace \zeta(2m+1) \rbrace_{m=1}^n \),
+            \[ A(n) = \sum_{m=1}^{n} a_{m,n} \zeta(2m+1), \]
+            wherein the weights satisfy \( a_{m,n} = q_{m,n} \pi^{2(n-m)} \) with \( q_{m,n} \in \mathbb{Q} \). 
+            In particular, \( a_{n,n} = 1 \), such that \(A(1) = \zeta(3) \). 
+            Determining the first \(a_{m,n}\)'s numerically and isolating \( \zeta(2n+1) \) gives:
+            \begin{align}
+               \zeta(3) &= A(1), \\
+               \zeta(5) &= A(2) + \frac{4\pi^2}{15} \zeta(3),  \\
+               \zeta(7) &= A(3) + \frac{8\pi^2}{21} \zeta(5) - \frac{4\pi^4}{105} \zeta(3),  \\
+               \zeta(9) &= A(4) + \frac{4\pi^2}{9} \zeta(7) - \frac{8\pi^4}{135} \zeta(5) + \frac{8\pi^6}{2~835} \zeta(3), \\
+               \zeta(11) &= A(5) + \frac{16\pi^2}{33} \zeta(9) - \frac{4\pi^4}{55} \zeta(7) + \frac{16\pi^6}{3~465} \zeta(5) -\frac{4\pi^8}{31~185} \zeta(3), \\
+               &\vdots
+            \end{align}
+            Now, in the right hand side of these equations we may replace the \( \zeta(2m+1) \)'s by the expressions from the preceding lines.
+            This leaves us with \( \zeta(2n+1) \) expressed exclusively in terms of \( \lbrace A(m) \rbrace_{m=1}^{n} \), i.e., \( \lbrace \zeta(2k) \rbrace_{k=1}^{\infty} \), respectively. 
+            This is really just inverting the expression for \( A(n) \) by &#x2018Gaussian elimination&#x2019, resulting in:
+            \begin{align}
+               \zeta(3) &= A(1), \\
+               \zeta(5) &= A(2) + \frac{4\pi^2}{15} A(1), \\
+               \zeta(7) &= A(3) + \frac{8\pi^2}{21} A(2) + \frac{4\pi^4}{63} A(1), \\
+               \zeta(9) &= A(4) + \frac{4\pi^2}{9} A(3) + \frac{104\pi^4}{945} A(2) + \frac{8\pi^6}{525} A(1), \\
+               \zeta(11) &= A(5) + \frac{16\pi^2}{33}  A(4) + \frac{212\pi^4}{1~485} A(3) + \frac{944\pi^6}{31~185} A(2) +\frac{604\pi^8}{155~925} A(1), \\
+               &\vdots \\
+               \zeta(2n+1) &= \sum_{m=1}^n b_{m,n} \pi^{2(n-m)}  A(m) \\
+               \zeta(2n+1) &= \pi^{2n} \sum_{m = 1}^n b_{m,n} (-1)^m \frac{2^{2m+1}}{2m+1} \sum_{k=0}^{\infty} \frac{\zeta(2k)}{\prod_{j=1}^{2m+1}(2k+j)},
+            \end{align}
+            where the (new) weights are all rational and positive, \( b_{m,n} \in \mathbb{Q}^+ \) and \( b_{n,n} = 1\). 
+            Although I leave this without any rigorous proofs, all of the above formulas have been verified to numerical precision. 
+            These relations are reminiscent of the more rapidly converging series found by D. Cvijovi&#263; and J. Klinowski in 1997 (reference below). 
+            To me, they serve as mesmerizing connections between the somewhat mysterious numbers \( \zeta(2n+1) \) and the more familiar \( \zeta(2n) \).
+         </p>
+
+         <p align="justify">
+            If you like what you just read, <b>please consider sending me an email with &#x2018unbraid&#x2019 in the subject field</b>.
+            I might set up an email subscription.
+            Until next time!
+         </p>
+
+         <p align="left">
+            <b>References / further reading:</b> <br>
+            \( \circ \) L. P. Gor'kov, <a href="http://www.w2agz.com/Library/Classic%20Papers%20in%20Superconductivity/Gorkov,%20The%20G-L%20Equations%20from%20BCS,%20Sov-Phys%20JETP%209,%201364%20(1959).pdf"><em>Microscopic derivation of the Ginzburg-Landau equations in the theory of superconductivity</em></a>, J. Exptl. Theoret. Phys. (U.S.S.R.) <b>36</b>, 1918-1923 (1959) <br>
+            \( \circ \) G. Wagner, HSR, F. Flicker, and Steven H. Simon, <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.104.134506">Microscopic Ginzburg-Landau theory and singlet ordering in Sr\(_2\)RuO\(_4\)</a>, Phys. Rev. B <b>104</b>, 134506 (2021) <br>
+            \( \circ \) M.-P. Chen and H. M. Srivastava, <a href="https://link.springer.com/article/10.1007/BF03322082"><em>Some families of series representations for the Riemann \( \zeta(3)\)</em></a>, Results in Mathematics <b>33</b>, 179 (1998) <br>
+            \( \circ \) D. Cvijovi&#263; and J. Klinowski, <a href="https://www.ams.org/journals/proc/1997-125-05/S0002-9939-97-03795-7/">New rapidly convergent series representations for \( \zeta(2n+1) \)</a>, Proc. Amer. Math. Soc. <b>125</b>, 1263-1271 (1997) <br>
+         </p>
+
+         <hr style="width:80%"> 
+
         <h3>Counting loops</h3>
         <h4>A peek into the world of fully packed loops on a square lattice, June 29, 2024</h4>
             <p align="justify">
@@ -54,7 +183,7 @@
                In particular, for certain boundary conditions, there are beautiful and exact answers to (A).
                <a href="https://journals.aps.org/pr/abstract/10.1103/PhysRev.162.162">Elliott Lieb famously showed</a> the asymptotic scaling \( \sim {1.5396\dots}^{4n^2} \) for \( m=n \) in 1967.
                For domain wall boundary conditions there is a mapping to combinatorial objects called alternating sign matrices, which have been <a href="https://arxiv.org/abs/math/9407211">enumerated exactly</a> for \( m = n \) to \( \prod_{k = 0}^{n-1} \frac{(3k+1)!}{(n+k)!} \).
-               We will neither explain, nor derive any of these amazing results, but rather discuss some pragmatic and direct approaches as to how one might go about to count FPLs in a brute force fasion.
+               We will neither explain, nor derive any of these amazing results, but rather discuss some pragmatic and direct approaches as to how one might go about to count FPLs in a brute force fashion.
             </p>
             <p align="justify">
                First, let us assume that you found one FPL when first given the above task. 
@@ -66,11 +195,11 @@
                On the square lattice it turns out that this single operation is enough to generate <em>all</em> the remaining FPLs, given any single one.
                That is, repeated applications of plaquette flips is sufficient to generate all possible configurations.
                So all you need to do is to locate plaquettes in your FPL with parallel blue lines, flip one at random, and keep track of which configurations you have seen before.
-               If you are persitent and keep flipping random plaquettes for long enough, you will have encountered them all.
+               If you are persistent and keep flipping random plaquettes for long enough, you will have encountered them all.
                At this point you might find it unsatisfactory that I am not presenting a proof of the above statement. 
                In which case, I encourage you to first try to prove something simpler, namely that all FPLs must have at least one flippable plaquette on the graph considered. 
                [Hint: there must always be one not too far from any of the graph corners.] A complete and elegant proof logic can for instance be found in Appendix B of <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.69.064404">this</a> paper. 
-               Coding up this direct strategy in python, making use of the <a href="https://networkx.org">NetworkX</a> package, gives the table below (where in the rightmost column I have partioned the configurations into sectors with a given number of loops \( \ell \)).
+               Coding up this direct strategy in python, making use of the <a href="https://networkx.org">NetworkX</a> package, gives the table below (where in the rightmost column I have partitioned the configurations into sectors with a given number of loops \( \ell \)).
             </p>
             <style>
                 table, th, td {
@@ -167,12 +296,12 @@
                The idea will be the following. We start with a completely random initial set of variables \( \lbrace \sigma_e \rbrace \). 
                Then, the following move is suggested: (\(\star\)) Look at a variable at random and check whether the value of \( H \) is lowered by changing that variable (to blue if it was white, and to white if it was blue).
                If the energy is not lowered by the proposed change, then we discard the proposal. 
-               If the energy is lowered by the move, on the other hand, we accept the proposal with a probabilty of \( \min\lbrace 1, \exp(- \Delta H / T) \rbrace \), where \( \Delta H \) is the change of \( H \) under the proposed move, and \(T\) is an introduced ''temperature'' (assumed much smaller than 1 in this case).
+               If the energy is lowered by the move, on the other hand, we accept the proposal with a probability of \( \min\lbrace 1, \exp(- \Delta H / T) \rbrace \), where \( \Delta H \) is the change of \( H \) under the proposed move, and \(T\) is an introduced ''temperature'' (assumed much smaller than 1 in this case).
                Now, repeating the step (\(\star\)) many times will eventually equilibriate the system in a ground state of \( H \) and hence a FPL.
                What is outlined here is in essence the <a href="https://en.wikipedia.org/wiki/Metropolis–Hastings_algorithm">Metropolis&mdash;Hastings</a> algorithm, a prime example of a Markov Chain Monte Carlo method.
              </p>
              <p align="justify">
-               Implementing the above algorithm and counting the number of loops in the encountered FPL when equilibriating more than \(10^4\) times results in histograms like those displayed below for systems of sizes \(10\times 10\) and \(20\times 20\):
+               Implementing the above algorithm and counting the number of loops in the encountered FPL when equilibrating more than \(10^4\) times results in histograms like those displayed below for systems of sizes \(10\times 10\) and \(20\times 20\):
              </p>
              <img src="LoopDistributions.png" width="800" alt="Dists">
              <p align="justify">
@@ -213,6 +342,16 @@
       </div>
       <div class="card">
         <h3>Book recommendations</h3>
+        <p> <a href="https://www.goodreads.com/book/show/44065062-something-deeply-hidden">Something Deeply Hidden</a> by Sean Carroll (2019) </p>
+        <img src="Carroll.png" width="128" alt="Hidden"> <br>
+        <p> <a href="https://www.goodreads.com/book/show/6371638-the-flying-trapeze">The Flying Trapeze: Three Crises for Physicists</a> by J. Robert Oppenheimer (1965)</p>
+        <img src="Oppenheimer.png" width="128" alt="Oppenheimer"> <br>
+        <p> <a href="https://www.goodreads.com/book/show/8520610-quiet">Quiet: The Power of Introverts in a World That Can't Stop Talking</a> by Susan Cain (2012) </p>
+        <img src="Cain.png" width="128" alt="Quiet"> <br>
+        <p> <a href="https://www.cambridge.org/core/books/ecology-community-and-lifestyle/62B63AA34792877E2EA0269585645C46">Ecology, Community and Lifestyle</a> by Arne N&aelig;ss (1989) </p>
+        <img src="Naess.png" width="128" alt="Naess"><br> 
+        <p> <a href="https://www.goodreads.com/book/show/111185.Physics_and_Philosophy"><em>Physics and Philosophy</em></a> by Werner Heisenberg (1958)</p>
+        <img src="Heisenberg.png" width="128" alt="Heisenberg"><br>
         <p> <a href="https://en.wikipedia.org/wiki/Blue_and_Brown_Books"><em>The Blue and Brown Books</em></a> by Ludwig Wittgenstein (1958)</p>
         <img src="BlueAndBrown.png" width="128" alt="Wittgenstein"><br>
         <p> <a href="https://en.wikipedia.org/wiki/The_Stranger_(Camus_novel)"><em>The Stranger</em></a> by Albert Camus (1942)</p>
