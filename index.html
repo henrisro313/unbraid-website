@@ -16,12 +16,145 @@
     <div class="leftcolumn">
       <div class="card">
 
+         <h3>Aperiodic monotiles and the hat quasicrystal</h3>
+         <h4>On the discovery of the hat and thoughts about its realizations, September 7, 2024</h4>
+
+         <p align="justify">
+            Hello, and thanks for visiting my blog. Today's post concerns a recent breakthrough within the mathematical theory of tilings.
+            I will tell you why I find this discovery interesting and review (a selection of) the history of ideas leading up to it.
+            I will also share some speculative ideas regarding how the recently discovered tiling might be realized in a physical system.
+         </p>
+   
+         <p align="justify">
+            We will go about the history of the problem in non-chronological order.
+            In March 2023 the announcement of a quite extraordinary discovery was made, and with it a question dating back perhaps 800 years was affirmatively answered.
+            The question was: can a single shape tile the plane without translational symmetry?
+            [In layman's terms: the problem is to find a shape that when copied can be used to cover the plane without overlap and not leaving gaps, and crucially such that the pattern does not repeat on arbitrarily large scales.
+            The last part of the problem, concerning no repetition (translational symmetry), may not be obvious nor easy to understand at first encounter.]
+            The newly discovered shape, dubbed &#x2018the hat&#x2019 (in my opinion it should rather have been dubbed &#x2018the T-shirt&#x2019), constitutes the first example of an <em>einstein</em> (pun intended) or <em>aperiodic monotile</em>. It looks like this:
+         </p>
+         <img src="Hat.png" width="300" alt="Hat">
+
+         <p align="justify">
+            It consists of 13 straight edges of two different lengths.
+            One may say that it hits the sweet spot of being regular enough to tessellate the plane, yet being sufficiently complex to force non-periodicity in the way it tiles.
+            In fact, the way it tiles forms a new hierarchical structure, in which metatiles assemble on increasingly larger scales. 
+            Unlike most mathematical discoveries, this one caught public attention and made <a href="https://www.theguardian.com/science/2023/apr/03/new-einstein-shape-aperiodic-monotile">international headlines</a>.
+            The <a href="https://sites.google.com/view/thegrimmnetwork/hatfest">Hatfest</a>, with a strong artistic and recreational touch, was arranged to celebrate it.
+            And the team behind the discovery, led by the puzzle solver and &#x2018;retired print technician&#x2019; <a href="https://the-orangery.weebly.com/">David Smith</a>, constitutes a beautiful example of a scientific collaboration at its best.
+            [Caveat #1: the authors did in fact not only discover a single aperiodic monotile, but a continuous spectrum of aperiodic monotiles, see the animation on <a href="https://cs.uwaterloo.ca/~csk/hat/">this</a> page. 
+            Caveat #2: an early critique that was raised against the hat is that both the hat <em>and</em> its mirror image are needed to tile the plane (as you can verify by inspecting above image).
+            However, just about a month after the announcement of the initial discovery, the same authors announced a second discovery that solved this issue.
+            This time, strictly one (chiral) shape was found that also tiles the plane only in an aperiodic fashion.]
+         </p>
+         
+         <p align="justify">
+            The (probably very old) age of the aperiodic monotile problem may be indicative of its difficulty (to gain some respect for the hardness of this seemingly simple problem, try to find one yourself, perhaps starting with the same <a href="https://www.jaapsch.net/puzzles/polysolver.htm">tool</a> as David Smith).
+            The broader historical context of the problem and possible future material applications makes it even more fascinating. 
+            In what follows, I will mention some of the historical events leading up to last year's discovery.
+         </p>
+
+         <p align="justify">
+            In the western world, the interest in aperiodic tilings was high in the 1960s and onwards, starting with <a href="https://en.wikipedia.org/wiki/Hao_Wang_(academic)">Hao Wang</a> noting a connection between decision problems and tilings.
+            Various subsequent work inspired by Wang demonstrated sets of multiple tiles that form aperiodic tilings. 
+            The first such tiling set contained 20&thinsp;426 distinct shapes(!) and was put forward by <a href="https://en.wikipedia.org/wiki/Robert_Berger_(mathematician)">Robert Berger</a> in 1962.
+            This initiated a race to reduce the required number of distinct shapes while maintaining aperiodicity. 
+            By 1971, the number of distinct shapes required had been reduced to <em>six</em>, as demonstrated by <a href="https://en.wikipedia.org/wiki/Raphael_M._Robinson">Raphael Robinson</a>.
+            A series of tilings were discovered by <a href="https://en.wikipedia.org/wiki/Roger_Penrose">(Sir) Roger Penrose</a> (the first one contained <em>six</em> tiles) in 1974. 
+            One of the most famous tilings (&#x2018;the Penrose tiling&#x2019;), consists of just <em>two</em> tiles (two rhombi, see Fig. 8 in patent application <a href="https://worldwide.espacenet.com/patent/search/family/010251048/publication/US4133152A?q=US4133152A">US4133152A</a>).
+            Penrose's tilings have been subject to an impressive number of studies, ranging from a possible connection to <a href="https://www.quantamagazine.org/never-repeating-tiles-can-safeguard-quantum-information-20240223/">quantum error correction</a> to experimental realizations in <a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.111.077201">artificial spin ices</a>.
+            Several equally interesting and partially overlapping aperiodic tiling sets were discovered independently by <a href="https://en.wikipedia.org/wiki/Robert_Ammann">Robert Ammann</a> around the same time as Penrose.
+            [Intermezzo: broadly speaking, the techniques involved to produce aperiodic tilings revolve around decorating the tiles to form <em>matching rules</em>, or imposing <em>inflation rules</em> in which each tile is subdivided into a combination of tiles.]
+            Up until 1982 (which we return to below), the above-mentioned tilings were mainly considered to belong to recreational mathematics.
+         </p>
+
+         <p align="justify">
+            We wind back time another 500 years or so and move to the Middle East. There are several hints of deep tiling knowledge imprinted in Islamic architecture.
+            Analysis of the <em>Girih tiles</em> tessellating the Darb-i-Imam shrine in Isfahan, Iran (1453 C.E.) reveals nearly perfect quasicrystalline Penrose patterns, more than five centuries before their theoretical discovery in the west! 
+            Here, &#x2018nearly&#x2019 refers to a small number of point-like mismatches, in 11 out of 3700 Penrose tiles, that prevents the tessellation from being perfectly quasi-crystalline. 
+            One can imagine these mismatches as inadvertent construction glitches, or, perhaps controversially, being purposefully introduced to demonstrate human inferiority in comparison with the sacred (?).
+         </p>
+         <img src="Girih.png" width="350" alt="Girih">
+
+         <p align="justify">
+            In 1982 <a href="https://en.wikipedia.org/wiki/Dan_Shechtman">Dan Shechtman</a> shook the crystallographic community and initiated a paradigm shift when he experimentally discovered <em>quasicrystals</em>, a structure which is ordered but not periodic.
+            These structures, initially found in aluminum alloys, display diffraction patterns with peak symmetries (such as 5-fold or 10-fold) not permitted by the <a href="https://en.wikipedia.org/wiki/Crystallographic_restriction_theorem">crystallographic restriction theorem</a>. 
+            [The crystallographic restriction theorem says that the rotational symmetries of a crystal are limited to 2-fold, 3-fold, 4-fold, or 6-fold]. 
+            Most quasicrystals have high thermal and electrical resistance, similar to ceramics, related to their ability to resist deformations. 
+            They are hard and extremely brittle and have applications to surface coatings, such as in <a href="https://www.sciencedirect.com/science/article/abs/pii/002230939390395E">frying pans</a>, heat insulation, and perhaps even bone repair.
+         </p>
+         <img src="ShechtmanETAL.png" width="500" alt="Shechtman">
+         
+         <p align="justify">
+            We return to the present and the hat. I want to change gears and point out a <em>periodic</em> structure associated with the hat: the <em>ruby lattice</em>.
+            The connection is the following. 
+            The hat can be constructed by eight regular kites, which are constituents of the Laves tiling dual to the ruby lattice. 
+            [A dual lattice is obtained by drawing vertices on the faces of the original lattice, and then connecting the vertices associated with adjacent faces on the original lattice. <a href="https://en.wikipedia.org/wiki/List_of_Euclidean_uniform_tilings">This</a> page contains a nice list.]
+            Since dual lattices are interchangeable, this means that there is an object living on the ruby lattice that corresponds to the hat.
+            Visually, this object may be said to be the &#x2018;skeleton&#x2019; of the hat and is a heptamer (in which each dimer acts as a &#x2018;stitch&#x2019; between adjacent kites that make up the hat).
+            In the figure below I have shown the connection by interlacing the ruby lattice (blue) and its Laves dual (purple).
+            In the two lower panels I have shown a finite section of the hat tiling on the Laves dual (left) and the corresponding heptamer covering on the ruby lattice (right); mirrored shapes have been colored red.
+            [Bonus information: the ruby lattice is sometimes labelled &#x2018;(3,4,6,4)&#x2019;, where the numbers indicate the number of edges in the polygons encountered when revolving around a given vertex on the lattice.]
+         </p>
+         <img src="RubyLattice.png" width="470" alt="Ruby">
+
+         <p align="justify">
+            This connection opens an interesting, yet speculative possibility: <em>in a naturally or synthesized single-layer ruby lattice, could one deposit a gas of molecular heptamers to form a two-dimensional hat quasicrystal?</em>
+            The point would then be that if the heptamers have the appropriate shape (cf. the black lines in the right panel above) and chemical binding properties with respect to the underlying lattice, they would be forced to fill the lattice aperiodically if the gas is dense enough (i.e., the pressure is high enough).
+            Would such a realized hat quasicrystal exhibit exotic material properties, and would they be similar or vastly different from their three-dimensional siblings?
+            Modern polymerization techniques have demonstrated promising capabilities with respect to synthesizing two-dimensional polymers that may turn useful in this respect (reference below).
+         </p>
+
+         <p align="justify">
+            In fact, there are two more such periodic structures to be pointed out. Why?
+            Because two other lattices of experimental relevance permit composite objects that also assemble the hat.
+            The two other lattices are both better illustrated in drawing:
+         </p>
+         <img src="OtherLattices.png" width="470" alt="Other">
+
+         <p align="justify">
+            Above, I have interlaced the lattices (blue) with their respective Laves duals (purple). 
+            The hat (living on the purple Laves tiling) is shown in black, and the associated polymer (living on the blue lattice) is shown in gray.
+            With respect to the above idea of realization, these additional blue lattices are interesting from the perspective that they are already realized in nature.
+            For instance, the left lattice is realized by the <a href="https://pubs.rsc.org/en/content/articlelanding/2013/ta/c3ta12639k">graphene allotrope <em>graphenylene</em></a>.
+            The right lattice is realized by <a href="https://onlinelibrary.wiley.com/doi/10.1002/anie.200701954">polymeric iron(III) acetate</a>.
+         </p>
+
+         <p align="justify">
+            I will round of this post with another historical anecdote. 
+            All three of the blue lattices mentioned in this post are examples of <em>Archimedean lattices</em>.
+            Archimedean lattices are two-dimensional lattices made of regular polygons such that all vertices are equivalent up to translations and rotations.
+            Motived by obtaining a geometric understanding of the solar system, Johannes Kepler was in 1619 presumably the first to demonstrate (<a href="https://archive.org/details/ioanniskepplerih00kepl/mode/2up"><em>Harmonices mundi libri V</em></a>) that there are precisely 11 such lattices.
+            Beat that, solar system!
+         </p>
+
+         <p align="justify">
+            Thanks to Felix Flicker, Trine Klemens&oslash;, and Freja Schou Guttesen for input and discussions relating to the material of this post.
+         </p>
+
+         <p align="left">
+            <b>References / further reading:</b> <br>
+            \( \circ \) D. Smith et al., <a href="https://escholarship.org/uc/item/3317z9z9"><em>An aperiodic monotile</em></a>, Combinatorial Thoery <b>4(1)</b> (2024)<br>
+            \( \circ \) D. Smith et al., <a href="https://arxiv.org/abs/2305.17743"><em>A chiral aperiodic monotile</em></a>, arXiv:2305.17743<br>
+            \( \circ \) P. J. Lu and P. J. Steinhardt, <a href="https://www.science.org/doi/10.1126/science.1135491"><em>Decagonal and Quasi-Crystalline Tilings in Medieval Islamic Architecture</em></a>, Science <b>315</b> (5815): 1106-1110 (2007)<br>
+            \( \circ \) D. Shechtman et al., <a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.53.1951"><em>Metallic Phase with Long-Range Orientational Order and No Translational Symmetry</em></a>, Phys. Rev. Lett. <b>53</b>, 1951 (1984)<br>
+            \( \circ \) D. Gratias, M. Quiquandon, <a href="https://www.sciencedirect.com/science/article/pii/S1631070519300386"><em>Discovery of quasicrystals: The early days</em></a>, C. R. Physique <b>20</b>, 803-816 (2019)<br>
+            \( \circ \) J. W. Colson and W. R. Dichtel, <a href="https://www.nature.com/articles/nchem.1628"><em>Rationally synthesized two-dimensional polymers</em></a>, Nature Chemistry <b>5</b>, 453-465 (2013)<br>
+         </p>
+
+         <hr style="width:80%"> 
+
          <h3>Odd zeta function relations</h3>
          <h4>From superconductivity to (new?) formulas for the zeta function of odd arguments, August 2, 2024</h4>
 
          <p align="justify">
             Welcome back! In this post (disclaimer: targeted for the more mathematically inclined reader) I will explore a topic situated somewhere between physics and pure mathematics. 
             I will tell a little story about how I stumbled across some peculiar, puzzling, and in my opinion aesthetically pleasing relations for the zeta function when I was benchmarking a theory for superconductivity several years ago.
+         </p>
+
+         <p align="justify">
+            <b>Update (August 23, 2024): </b> The community on <a href="https://math.stackexchange.com/questions/4959769/series-for-riemann-zeta-function-of-odd-arguments">Mathematics StackExchange</a> has kindly provided some illuminating connections concerning the content of this post.
+            In partiuclar, Greg Martin elegantly showed how one of the formulas discussed in this post may be proven quite simply.
          </p>
 
          <p align="justify">
@@ -32,8 +165,6 @@
             And Bernhard Riemann demonstrated a connection between the nontrivial zeros of the analytically continued zeta function and the prime counting function in his <a href="https://www.claymath.org/collections/riemanns-1859-manuscript/">landmark paper from 1859</a>.
             Proving (or disproving) the conjecture that Riemann posed concerning the location of these zeros is by many regarded as the most <a href="https://www.quantamagazine.org/how-i-learned-to-love-and-fear-the-riemann-hypothesis-20210104/">important unsolved problem</a> in pure mathematics today.
          </p>
-
-         <!-- Tenk på lim her. -->
 
          <p align="justify">
             Now, consider the zeta function evaluated at positive integer arguments, \( \zeta(n) \) with \( n \in \mathbb{N} \), since this is what will appear later.
@@ -129,9 +260,7 @@
          </p>
 
          <p align="justify">
-            If you like what you just read, <b>please consider sending me an email with &#x2018unbraid&#x2019 in the subject field</b>.
-            I might set up an email subscription.
-            Until next time!
+            Thanks to Glenn Wagner and Steven H. Simon for input and discussions relating to the material of this post.
          </p>
 
          <p align="left">
@@ -316,6 +445,11 @@
                To round off, here is a little Hamiltonian cycle puzzle dressed in recreational variations of <a href="https://en.wikipedia.org/wiki/Jordan_curve_theorem">Jordan's curve theorem</a> for you to ponder upon:
             </p>
              <img src="puzzle.png" width="550" alt="puzzle" align="center">
+
+            <p align="justify">
+               Thanks to Zhao Zhang and Weronika Wrzos-Kaminska for input and discussions relating to the material of this post.
+            </p>
+
             <p align="left">
                <b>References / further reading:</b> <br>
                \( \circ \) P. Zinn-Justin, <a href="https://arxiv.org/abs/0901.0665"><em>Six-Vertex, Loop and Tiling models: Integrability and Combinatorics</em></a>, habilitation thesis (2009) <br>
@@ -342,6 +476,12 @@
       </div>
       <div class="card">
         <h3>Book recommendations</h3>
+        <p> <a href="https://www.goodreads.com/book/show/40495148-blindness"><em>Blindness</em></a> by Jos&eacute Saramago (1995) </p>
+        <img src="Blindness.png" width="128" alt="Saramago"> <br>
+        <p> <a href="https://www.goodreads.com/book/show/62015302-11"><em>11%</a> by Maren Uthaug (2022) </p>
+        <img src="Uthaug.png" width="128" alt="Uthaug"> <br>
+        <p> <a href="https://www.goodreads.com/book/show/45974.The_Book_of_Disquiet"><em>The Book of Disquiet</em></a> by Fernando Pessoa (1982) </p>
+        <img src="Disquiet.png" width="128" alt="Pessoa"> <br>
         <p> <a href="https://www.goodreads.com/book/show/44065062-something-deeply-hidden"><em>Something Deeply Hidden</em></a> by Sean Carroll (2019) </p>
         <img src="Carroll.png" width="128" alt="Hidden"> <br>
         <p> <a href="https://www.goodreads.com/book/show/6371638-the-flying-trapeze"><em>The Flying Trapeze: Three Crises for Physicists</em></a> by J. Robert Oppenheimer (1965)</p>
