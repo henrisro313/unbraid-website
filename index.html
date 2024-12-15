@@ -7,7 +7,7 @@
 
 <div class="header">
     <h1>The Unbraid</h1>
-    <h2>&mdash; A scientific blog on topics in physics and mathematics &mdash;</h2>
+    <h2>&mdash; A scientific blog on topics in physics and (recreational) mathematics &mdash;</h2>
   </div>
 
   <link rel="stylesheet" href="teststyle.css">
@@ -15,6 +15,217 @@
   <div class="row">
     <div class="leftcolumn">
       <div class="card">
+
+         <h3>Game(s) of life</h3>
+         <h4>Cellular atuomata on Archimedan lattices, December 15, 2024</h4>
+
+         <p align="justify">
+            Welcome back! Long time, no see. In this post I will discuss cellular automata, which are discrete models of computation in the study of abstract machines and computational problems in theoretical computer science.  
+            In particular, I will look into the probably most famous cellular automaton of all, <em>the Game of Life</em> discovered by John Horton Conway and popularized by Martin Gardner in 1970.
+            I will explore what happens when the rules of Conway's Game of Life, which in the literature is almost exclusively studied on a square lattice, are applied to composite lattices (composed of more than one polygon).
+            Java code to generate the lattices constructions in this post can be found in my <a href="https://github.com/henrisro313/Games_of_life">GitHub repository</a>.
+            This code complements Peter Taylor's generic code structure, which can be found and downloaded from his <a href="https://gist.github.com/pjt33/becd56784480ddd751bf">GitHub gist</a>.
+            First, a bit of history. 
+         </p>
+
+         <p align="justify">
+            John Horton Conway (1937-2020) was a fascinating character and mathematician. 
+            As his biographer, Siobhan Roberts, described him: &#x2018;<em>John Horton Conway is perhaps the world's most lovable egomaniac. He is Archimedes, Mick Jagger, Salvador Dali, and Richard Feynman, all rolled into one.</em>&#x2019;
+            Conway invented the Game of Life (GoL) around 1970, an invention that included extensive experimentation of rules and variations played out on a Go board. 
+            Numberphile's Brady Haran interviewed Conway about GoL in 2014, which can be enjoyed <a href="https://www.youtube.com/watch?v=R9Plq-D1gEk">here</a>.
+            Besides GoL, Conway is also known for his work on the <a href="https://www.youtube.com/watch?v=jsSeoGpiWsw"><em>monster group</em></a>. 
+            [The monster group is formally the largest sporadic simple group and is the symmetry group of a 196 883-dimensional object].
+         </p>
+         <img src="Conway.png" width="270" alt="Conway" align="center">
+
+         <p align="justify">
+            The Game of Life was popularized by Martin Gardner in 1970.
+            Martin Gardner (1914-2010) was an American popular science writer.
+            Over 24 years Gardner wrote a total of 288 monthly columns of &#x2018;Mathematical Games&#x2019; for the <a href="https://www.scientificamerican.com/"><em>Scientific American</em></a>.
+            None of his columns would generate more enthusiasm and user responses than the October 1970 issue entitled &#x2018;<em>The fantastic combinations of John Conway's new solitaire game &#x2018;life&#x2019;</em>&#x2019;.
+            The unprecedented volume of reader responses included discoveries that were also new to Conway.
+            Some of the reader-reported discoveries following the post concerend structures such as &#x2018;spaceships&#x2019;/&#x2018;gliders&#x2019;, &#x2018;glider guns&#x2019;, and &#x2018;breeders&#x2019;.
+            Gliders, which are configurations that return to their initial state after a number of generations but at a different location (known to Conway before GoL was popularized), were particularly exciting as they marked a milestone towards showing that GoL could be used for arbitrary computations. 
+            In 1971, a quarterly newsletter (with an annual subscription cost of one dollar) dedicated to the rich facets of GoL named &#x2018;LIFELINE&#x2019; was initiated.
+            A modernized archive, containing most of the discoveries made in GoL and comprising some 2 641 articles (per December 2024), can be found on <a href="https://conwaylife.com/wiki/Main_Page">LifeWiki</a>.
+         </p>
+         <img src="MathematicalGames.png" width="275" alt="SciAm" align="center">
+
+         <p align="justify">
+            The Game of Life is made of a simple, completely deterministic, iterative rule in which the evolution of a state of binary variables is completely dictated by the initial condition (hence, whether or not it should be called a &#x2018;game&#x2019; is a legitimate question). 
+            In its original form, GoL is played out on a square lattice.
+            Each square encodes a binary variable and is either dead or alive, and has eight corner (or edge) sharing neighbouring squares.  
+            The rule of GoL is that from one generation to the next:
+         </p>
+
+         <p align="justify">
+            (1) living cells with exactly 2 or 3 live neighbours live on, all other cells die. <br>
+            (2) any dead cell with exactly 3 live neighbours becomes a living cell. <br>
+         </p>
+
+         <p align="justify">
+            The rule is both strikingly simple, and may seem somewhat random, but is in fact carefully chosen.
+            In fact, the rule bears a simple ecological interpretation in the sense that life is sustained from one generation to the next only if there are not too few (underpopulation), nor too many (overpopulation) neighbouring cells alive.
+            The Game of Life is an example of a <em>cellular automaton</em>, a term coined by <a href="https://en.wikipedia.org/wiki/Stanis%C5%82aw_Ulam">Stanislaw Ulam</a> and <a href="https://en.wikipedia.org/wiki/John_von_Neumann">John von Neumann</a> in their exploration of self-replicating machines in the 40s and 50s.
+            GoL is a <em>Turing complete</em> automaton, which means that it can be used to emulate any <a href="https://simple.wikipedia.org/wiki/Turing_machine">Turing machine</a>. 
+            For instance, serving as a mesmerizing example, GoL can be used to simulate GoL itself, see, e.g., <a href="https://www.alanzucconi.com/2020/10/13/conways-game-of-life/">this video</a>. 
+            GoL and its multitude of variations and facets remain active research topics more than 54 years after the discovery, despite GoL being complete according to Conway (both Turing-wise and understanding-wise).
+            However, in almost all established GoL literature, the game is played out on a square lattice. That is, up to a few well-studied exceptions of lattices such as hexagonal, triangular, and the Penrose tiling.
+            It therefore seems natural to explore &#x2018;Life&#x2019; on other lattices. 
+         </p>
+
+         <p align="justify">
+            In searching for what had been done on other lattices, I stumbled upon a fascinating challenge posted as a <a href="https://codegolf.stackexchange.com/questions/35827/implement-the-game-of-life-on-anything-but-a-regular-grid/276816#276816">Code Golf StackExchange post</a>, inviting coding enthusiasts to implement the game of life on everything else than a square lattice.
+            Few had considered Archimedean lattices, which are lattices made out of regular polygons as explained towards the end of my last post.
+            And that initiated a growing urge to explore and discover oscillators, gliders, and perhaps even more complicated structures on my favorite lattices. 
+            Hours of late night coding and some 4-7 CPU hours resulted in the findings summarized in the table below.
+         </p>
+
+         <style>
+            table, th, td {
+               border: 1px solid black;
+               border-collapse: collapse;
+               font-size: 14px;
+            }
+         </style>
+         <table style="width:90%" align="center">
+            <tr>
+               <th><a href="https://en.wikipedia.org/wiki/List_of_Euclidean_uniform_tilings">Archimedean lattice</a> (face configuration)</th>
+               <th><a href="https://en.wikipedia.org/wiki/Still_life_(cellular_automaton)">Still life</a></th>
+               <th><a href="https://en.wikipedia.org/wiki/Oscillator_(cellular_automaton)">Oscillator</a> \(\lbrace\)periods\(\rbrace \)</th>
+               <th><a href="https://en.wikipedia.org/wiki/Glider_(Conway%27s_Game_of_Life)">Glider</a></th>
+               <th><a href="https://en.wikipedia.org/wiki/Puffer_train">Puffer train</a> (type)</th>
+            </tr>
+            <tr>
+               <th>Truncated square \( (4,8^2) \)</th>
+               <th> &#10003; </th>
+               <th> &#10003; \( \lbrace 2,4,5,6,7,14 \rbrace \) </th>
+               <th> - </th>
+               <th> - </th>
+            </tr>
+            <tr>
+               <th>Kagome \( (6,3,6,3) \)</th>
+               <th> &#10003; </th>
+               <th> &#10003; \( \lbrace 2,5 \rbrace \) </th>
+               <th> &#10003; </th>
+               <th> &#10003; (clean) </th>
+            </tr>
+            <tr>
+               <th>Truncated trihexagonal \( (4,6,12) \)</th>
+               <th> &#10003; (topological) </th>
+               <th> &#10003; \( \lbrace 2,3,5,6,9,15 \rbrace \) </th>
+               <th> - </th>
+               <th> - </th>
+            </tr>
+            <tr>
+               <th>Star \( (3,12^2) \)</th>
+               <th> &#10003; </th>
+               <th> &#10003; \( \lbrace 2,3,4,5,8,9,18 \rbrace \) </th>
+               <th> - </th>
+               <th> - </th>
+            </tr>
+            <tr>
+               <th>Maple leaf \( (3^4, 6) \)</th>
+               <th> &#10003; </th>
+               <th> &#10003; \( \lbrace 2,3,20,24 \rbrace \) </th>
+               <th> - </th>
+               <th> - </th>
+            </tr>
+            <tr>
+               <th>Snub square \( (3^2,4,3,4) \)</th>
+               <th> &#10003; </th>
+               <th> &#10003; \( \lbrace 2 \rbrace \) </th>
+               <th> &#10003; </th>
+               <th> - </th>
+            </tr>
+            </tr>
+         </table>
+
+         <p align="justify">
+            Instead of explaining every detail and entry of the table (which otherwise is equipped with explaining hyperlinks), I will elaborate on a handful of interesting structures.
+         </p>
+
+         <p align="justify">
+            We begin with the truncated trihexagonal lattice, which is built up of squares, hexagons, and dodecagons (the observant reader will recognize this lattice from the previous post).
+            On this lattice, the faces have four, six, or twelve corner sharing neighbours depending on whether one considers a square, a hexagon, or dodecagon, respectively.
+            All considered lattices permit still life (a pattern that is static and does not change).
+            On the truncated trihexagonal lattice, however, one can form arbitrarily long strings of still life.
+            And if the lattice is embedded on higher genus surfaces, these strings may be characterized by topological winding numbers.
+            Consider, for example, the following still life on the truncated trihexagonal lattice embedded on a torus (periodic in both directions):
+         </p>
+         <img src="StringLife.png" width="400" alt="TopoLife" align="center">
+         <p align="justify">
+            The string winds/wraps twice in the vertical direction and once in the horizontal direction and may as such be characterized by the winding number \( (1,2) \).
+            One may call it &#x2018;topological still life&#x2019;.
+         </p>
+         
+         <p align="justify">
+            The maple leaf lattice is frustrated lattice that can be obtained by taking a triangular lattice and depleting 1/7 of its vertices.
+            On this lattice my search resulted in a couple of peculiar, long-period oscillators (which are structures that repeat after a certain number of generations). 
+            They look like this (periods 20 and 24, respectively):
+         </p>
+         <img src="oscillator_20.gif" width="170" alt="MapleLeafOsc1" align="center">
+         <img src="oscillator_24.gif" width="120" alt="MapleLeafOsc2" align="center">
+         <p align="justify">
+            All the independent oscillators I have found (across all six lattices) can be found in my <a href="https://github.com/henrisro313/Games_of_life">GitHub repository</a>.
+         </p>
+
+         <p align="justify">
+            Interestingly, I found gliders on only two of the investigated lattices. 
+            Recall that gliders are translating configurations that repeat after a certain number of generations, and that do not leave any debris.
+            The two lattices I found to permit gliders are the kagome lattice and the snub square lattice.
+            The kagome lattice can also be obtained by depleting a triangular lattice, this time by removing 1/4 of the vertices. 
+            [The word &#x2018;kagome&#x2019; stems from Japanese and refers to a woven bamboo pattern used to create baskets.]
+            The first glider takes the form of an hexagonal walker accompanied by a straggling, but crucial triangle:
+         </p>
+         <img src="glider_Kagome.gif" width="500" alt="Kagomeglider" align="center">
+
+         <p align="justify">
+            The snub square glider is more chaotic and shoots off a small piece that quickly dies out as it traverses the lattice:
+         </p>
+         <img src="glider_SkewSquare.gif" width="500" alt="SkewSquareglider" align="center">
+
+         <p align="justify">
+            Another key construction within the study of abstract and self-replicating machines within cellular automata is a <a href="https://en.wikipedia.org/wiki/Puffer_train">puffer train</a>.
+            These are initially finite patterns that stably propagates across the lattice while leaving debris behind. 
+            They are examples of structures that grow arbitrarily over time, thus being seeds for infinite growth.
+            Puffer trains can be divided into two slightly ill-defined categories: clean and dirty. 
+            Clean puffer trains leave small amounts of debris that appear organized, while a dirty puffer trains leave chaotic debris in which there is little or no order.
+            <a href="https://en.wikipedia.org/wiki/Bill_Gosper">Bill Gosper</a>, who is the architect behind several key GoL patterns, was the first to discover a puffer train in square lattice GoL. 
+            One reason why puffer trains are important is that stabilizing or taming them open routes to construct more complicated, systematic structures, such as <a href="https://en.wikipedia.org/wiki/Breeder_(cellular_automaton)">breeders</a>, which generate copies of a secondary pattern.
+            Starting to see self-replication in the end of the tunnel?
+            Coming back to the kagome lattice, a tiny, yet crucial variation of the glider shown above does in fact result in a puffer train. 
+            This puffer train is of the clean type as it leaves an organized trace as it walks:
+         </p>
+         <img src="glider_debris.gif" width="300" alt="Kagomegrowth" align="center">
+
+         <p align="justify">
+            The above structures represent just the staring point of the creation of fascinating and abstract machines on composite lattices. 
+            While GoL may be said to have been completed on the square lattice, there could be gems hidden on more complicated lattices that offer more richness, such as coming from having non-constant coordination number (the number of neighbours).
+            One direction for exploration is to modify the rule to depend on the polygon type (such as whether one considers a triangle or a hexagon on the kagome lattice).
+            Another direction is to dig into the properties of <em>quantum games of life</em>, in which the live and dead cells are replaced by qubits.
+            Are there analogies, connections, or dualisms between concepts in quantum and classical game of life, such as between entanglement spreading and infinite growth?
+            And are there implications for quantum computation from the Turing completeness of classical game of life?
+            Finally, in light of the newly discovered aperiodic tilings (see the previous post), what does GoL have to offer on these tiles?
+         </p>
+
+         <p align="justify">
+            I will end this post with an example of what may be infinite growth on the snub square lattice. 
+            On this lattice, it seems that most initial configurations lead to extensive growth, frequently shooting off gliders: 
+         </p>
+
+         <img src="growth.gif" width="280" alt="SkewSquaregrowth" align="center">
+
+         <p align="left">
+            <b>References / further reading:</b> <br>
+            \( \circ \) S. Roberts, <a href="https://www.nytimes.com/2020/12/28/science/math-conway-game-of-life.html"><em>The Lasting Lessons of John Conway's Game of Life</em></a>, The New York Times, December 29, 2020.<br>
+            \( \circ \) A. Zucconi, <a href="https://www.alanzucconi.com/2020/10/13/conways-game-of-life/"><em>Conway's game of life</em></a>, October 13, 2020<br>
+            \( \circ \) M. Gardner, <a href="http://dx.doi.org/10.1038/scientificamerican1070-120"><em>Mathematical Games: The Fantastic Combinations of John Conway's New Solitaire Game &#x2018;Life&#x2019;</em></a>, Scientific American <b>223</b> 120-123 (1970); available <a href="https://web.stanford.edu/class/sts145/Library/life.pdf">here</a><br>
+            \( \circ \) A. Adamatzky, <a href="https://link.springer.com/book/10.1007/978-1-84996-217-9"><em>Game of Life Cellular Automata</em></a>, Springer. ISBN 978-1-84996-216-2 (2010)<br>
+            \( \circ \) S. Roberts, <a href="https://www.goodreads.com/book/show/22529392-genius-at-play"><em>Genius at play: the curious mind of John Horton Conway</em></a>, Bloomsbury USA. ISBN 978-1-62040-593-2 (2015)<br>
+         </p>
+
+         <hr style="width:80%"> 
 
          <h3>Aperiodic monotiles and the hat quasicrystal</h3>
          <h4>On the discovery of the hat and thoughts about its realizations, September 7, 2024</h4>
@@ -178,10 +389,10 @@
          </p>
 
          <p align="justify">
-            There is no doubt that the Soviet union harboured many influential physicists. One of most famous ones is <a href="https://no.wikipedia.org/wiki/Lev_Landau">Lev Landau</a> (photo source: <a href="https://www.mediastorehouse.com.au/science-photo-library/lev-landau-soviet-physicist-6411380.html">link</a>), who forged a powerful principle for continuous phase transitions.
+            There is no doubt that the Soviet union harboured many influential physicists. One of most famous ones is <a href="https://no.wikipedia.org/wiki/Lev_Landau">Lev Landau</a> (<a href="https://www.mediastorehouse.com.au/science-photo-library/lev-landau-soviet-physicist-6411380.html">photo source</a>), who forged a powerful principle for continuous phase transitions.
             In the early days of superconductivity, theorists were working hard to establish a microscopic theory following <a href="https://en.wikipedia.org/wiki/Heike_Kamerlingh_Onnes">Heike Kamerlingh Onnes'</a> experimental discovery in 1911.
             The major breakthrough came with Bardeen, Cooper, and Schrieffer's (<a href="https://en.wikipedia.org/wiki/BCS_theory">BCS</a>) theory in 1957.
-            Landau's student, <a href="https://en.wikipedia.org/wiki/Lev_Gor%27kov">Lev Gor'kov</a> (photo source: <a href="https://history.aip.org/phn/11512004.html">link</a>) subsequently succeeded in showing that microscopic version of Landau's theory reproduced essential features of BCS theory.
+            Landau's student, <a href="https://en.wikipedia.org/wiki/Lev_Gor%27kov">Lev Gor'kov</a> (<a href="https://history.aip.org/phn/11512004.html">photo source</a>) subsequently succeeded in showing that microscopic version of Landau's theory reproduced essential features of BCS theory.
          </p>
 
          <img src="LandauGorkov.png" width="400" alt="Levs">
@@ -334,6 +545,7 @@
                 table, th, td {
                    border: 1px solid black;
                    border-collapse: collapse;
+                   font-size: 12px;
                 }
              </style>
              <table style="width:80%" align="center">
@@ -476,6 +688,8 @@
       </div>
       <div class="card">
         <h3>Book recommendations</h3>
+        <p> <a href="https://www.goodreads.com/book/show/415058.My_Best_Mathematical_and_Logic_Puzzles_Dover_Recreational_Math_"><em>My Best Mathematical and Logic Puzzles </em></a> by Martin Gardner (1994) </p>
+        <img src="Gardner.png" width="128" alt="Gardner"> <br>
         <p> <a href="https://www.goodreads.com/book/show/40495148-blindness"><em>Blindness</em></a> by Jos&eacute Saramago (1995) </p>
         <img src="Blindness.png" width="128" alt="Saramago"> <br>
         <p> <a href="https://www.goodreads.com/book/show/62015302-11"><em>11%</a> by Maren Uthaug (2022) </p>
