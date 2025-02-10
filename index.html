@@ -16,6 +16,269 @@
     <div class="leftcolumn">
       <div class="card">
 
+         <h3>On power sums of consecutive integers</h3>
+         <h4>A diophantine volumetric hypercube equation, February 10, 2025</h4>
+
+         <p align="justify">
+            This post is about an equation that followed me for quite a few years. 
+            It began with an innocent fascination of a series of equations involving sums of square numbers (which I will display shortly) that I stumbled upon in a corner of the internet.
+            The fascination grew into a question during a (boring) dinner party, the question concerning a generalization to arbitrary powers.
+            The question oscillated in and out of my consciousness with varying intensity over the next decade or so.
+            While I eventually managed to establish some answers by myself, the ultimate punctuation to the pondering came when I one day dug into <a href="https://arxiv.org/">arXiv.com</a>&#8212;a moment simultaneously filled with joy and slight disappointment.
+         </p>
+
+         <p align="justify">
+            The initial fascination emerged when I saw the following set of questions relating the sum of \( N+1 \) consecutive square numbers to the sum of the next \( N \) square numbers:
+            \begin{align}
+            3^2+4^2 &= 5^2, \\
+            10^2+11^2+12^2 &= 13^2+14^2, \\
+            21^2+22^2+23^2+24^2 &= 25^2+26^2+27^2, \\
+            36^2+37^2+38^2+39^2+40^2 &= 41^2+42^2+43^2+44^2, \\
+            &\hspace{5pt}\vdots
+            \end{align}
+            A satisfying and straightforward generalization of Pythagorean triplets.
+            The equations have a simple geometrical interpretation.
+            The equations relate the total area of \( N+1 \) squares with side lengths being \( N+1 \) consecutive integers to the total area of \( N \) squares with side lengths being the next \( N \) consecutive integers.
+            The equality implies that it must be possible to slice up the initial square (on the &#x2018;Left Hand Side&#x2019; (LHS)) and distribute the pieces onto the next \( N \) squares (still on the LHS) to form a set of \( N \) squares (the ones on the &#x2018;Right Hand Side&#x2019; (RHS)) in which all the side lengths have been increased by \( N \).
+            Here is a self-explanatory example:
+         </p>
+
+         <img src="SquareSolution.png" width="400" alt="squares" align="center">
+
+         <p align="justify">
+            Let's begin by posing a couple of simple question: What is the general solution pattern to the above equations? For a given \( N \), are there multiple such integer solutions? 
+            Luckily, it takes no more than a few lines of algebra to find the answers. 
+            We may name the (a priori unknown) rightmost number on the LHS for \( n \).
+            So in the above examples, \( n = 4 \), \( 12 \), \( 24 \),  \(40 \), etc.
+            The equation we want (or at least I want) to solve then reads: 
+            \[ \sum_{j=0}^N (n-j)^2 = \sum_{j=1}^N (n+j)^2. \]
+            Now, isolate \( n^2 \) and carry out the sum to find that 
+            \[ n^2 = \sum_{j=1}^N \left[ (n+j)^2-(n-j)^2 \right] = \sum_{j=1}^N  4nj = 2nN(N+1). \]
+            In other words, there are precisely two solutions for each \( N \), namely \( n = 0 \) and \( n = 2N(N+1) \).
+            The first solution is not very interesting (in fact, it is trivial), and the other one establishes the general solution pattern to the above equation.
+         </p>
+
+         <p align="justify">
+            What happens if one replaces the powers by some arbitrary (positive) integer, \( d \in \mathbb{Z}^+ \), i.e.,
+            \[ \sum_{j=0}^N (n-j)^d = \sum_{j=1}^N (n+j)^d? \]
+            In particular, are there integer solutions for all \( d \)? 
+            The value \( d \) may be referred to as the <em>dimension</em> of the problem. 
+            In terms of the geometrical interpretation, \( d = 1 \) relates to lines, \( d = 2 \) to squares, \( d = 3 \) to cubes, and \( d \geqslant 4 \) to hypercubes.
+         </p>
+         
+         <p align="justify">
+            To get a feeling for this question, let's start by discussing two simple cases. 
+            The first case is that of \( d = 1 \), which is easily solved (for all \(N \)) by following the same steps as above to find that there is precisely <em>one</em> solution, namely \( n = N(N+1) \). 
+            One may therefore start speculating in whether a general solution could be (or at least be close to) \( n = dN(N+1) \). We will get back to this.
+            The second case is that of \( N = 1 \) for arbitrary \( d \). 
+            The observant reader will already have noticed this as a special case covered by the famous <em>Fermat's Last Theorem</em>, <a href="https://topdocumentaryfilms.com/fermats-last-theorem/">spectacularly proven by (Sir) Andrew Wiles</a> in the 90s.
+            Specifically, the theorem ensures that there are no non-zero integers \( a,b,c,d \), with \( d \geqslant 3 \), such that \( a^d + b^d = c^d \). 
+            So while the case \( N = 1 \) is already ruled out for \( d \geqslant 3 \), could there be solutions for large (enough) \( N \), at least for some \( d \geqslant 3 \)?
+            What about, for example, the case of \( N = 2 \) and \( d = 3 \) (which relates to the volume sum of integer-sided cubes)?
+         </p>
+
+         <img src="NoCubeSolution.png" width="400" alt="cubes" align="center">
+
+         <p align="justify">
+            In general, we are seeking a non-trivial integer root of an equation, so the equation is said to be a <em>diophantine</em> equation.
+            Secondly, the equation relates to volumes of hypercubes, so let's call it a <em>diophantine volumetric hypercube</em> equation.
+            A convenient formulation of the problem is obtained by collecting all terms on one side and seek the integral root(s) of the following polynomial:
+            \begin{align} 
+               p_{N,d}(x) &:= x^d - \sum_{j=1}^N [(x+j)^d-(x-j)^d] \\
+               &= x^d - \sum_{k=0}^{d}  \binom{d}{k} x^k \left[1 - (-1)^{d-k} \right] \sum_{j=1}^N j^{d-k}.
+            \end{align}
+            For convenience (as will become clear in a moment), we will further distinguish between the cases of even and odd dimension \( d \). 
+            For even \( d = 2m \), the polynomial \( p_{N,d} \) has no constant term since terms with even \( k \) vanish. 
+            Thus \( p_{N,2m}(0) = 0 \), which is precisely the trivial (and uninteresting) solution found above for \( d = 2 \).
+            Modulo this trivial solution the polynomial \( p_{N,d} \) for even and odd dimension take the respective forms
+            \begin{align}
+            \tilde{p}_{N,2m}(x) := p_{N,2m}(x)/x &= x^{2m-1} - 2\sum_{k=0}^{m-1}\binom{2m}{2k+1} x^{2k}\sum_{j=1}^{N}j^{2(m-k)-1},  \\
+            p_{N,2m-1}(x) &= x^{2m-1} - 2\sum_{k=0}^{m-1}\binom{2m-1}{2k} x^{2k}\sum_{j=1}^{N}j^{2(m-k)-1}. 
+            \end{align}
+         </p>
+         
+         <p align="justify">
+            <b>Lemma I (monotonicity):</b> <em> The polynomial \( p_{N,d} \) has a unique, non-trivial root in \( \mathbb{R}^+ \). 
+               Moreover, the sequence of (non-zero) roots \( \lbrace x_{N,d}:~p_{N,d}(x_{N,d})=0 \rbrace_{N=1}^{M} \) is monotonically increasing, i.e., \(x_{1,d} < x_{2,d} < x_{3,d} < \dots < x_{M,d}\) for all positive integers \(M\).</em>
+         </p>
+
+         <p align="justify">
+            <b>Proof of Lemma I:</b> The proof follows from a special case of <a href="https://en.wikipedia.org/wiki/Descartes%27_rule_of_signs"><em>Descartes' rule of signs</em></a>, which states that for a polynomial \( p \) with real coefficients, the number of real positive roots is the equal to or less than (by an even number) the number of sign changes of the (ordered) coefficients. 
+            Let us apply the rule to the particular case of polynomials of the form:
+            \[ q_{2m-1}(x) = x^{2m-1} - \sum_{k = 0}^{m-1} a_{2k} x^{2k} \]
+            with \( a_{2k} > 0 \) for all \( k \). 
+            Since the polynomial \( q \) possesses one coefficient sign change, Descartes' rule of signs tells us that \( q \) must have precisely one positive real root. 
+            Furthermore, since \( q_{2m-1}(x) < 0 \) for \( x \leqslant 0 \) and the real root of \( q \) is unique, we know that if we have \( a,b \in \mathbb{R} \) such that \( q_{2m-1}(a) < 0 \) and \( q_{2m-1}(b) = 0 \), then \( a < b \). 
+            Since the specific polynomials \( \tilde{p}_{N,2m} \) and \( p_{N,2m-1}(x) \) are both of the form \( q_{2m-1} \) discussed above, one may conclude that \( p_{N,d}(x) \) must have a unique root in \( \mathbb{R}^+\) by virtue of Descartes' rule of signs. 
+            
+            To show that the sequence of roots is monotonically increasing, assume that we have \( x_{N,d} \in \mathbb{R}^+ \) such that \( p_{N,d}(x_{N,d}) = 0 \). 
+            One then has, from the form of \( p_{N,d} \), that
+            \[ p_{N+1,d}(x_{N,d}) = -[(x_{N,d}+N+1)^d-(x_{N,d}-N-1)^d] < 0. \]
+            From the sign of the polynomial, as explained above, we know that if we have \( a, b\in \mathbb{R} \) such that \( p_{N+1,d}(a) < 0 \) and \( p_{N+1,d}(b) = 0 \), then \( b > a \). 
+            Hence the root of \( p_{N+1,d} \) must satisfy \( x_{N+1,d} > x_{N,d} \). &#65517;
+         </p>
+
+         <p align="justify">
+            <b>Lemma II (lower bound):</b> <em>The real positive root \( x_{N,d} \) of \( p_{N,d} \) satisfies \( x_{N,d} \geqslant dN(N+1) \) where the inequality is saturated if and only if \( d \in \lbrace 1, 2 \rbrace \).</em>
+         </p>
+
+         <p align="justify">
+            <b>Proof of Lemma II:</b> For notational convenience, I define \( \sigma := N(N+1) \). 
+            Alluding to the proof of Lemma I, the inequalities that need to be established to prove Lemma II are:
+            \begin{align}
+               \tilde{p}_{N,2m}(2m \sigma) = &(2m \sigma)^{2m-1} \\
+               &- 2\sum_{k=0}^{m-1}\binom{2m}{2k+1} (2m \sigma)^{2k}\sum_{j=1}^{N}j^{2(m-k)-1} \leqslant 0, \\
+               p_{N,2m-1}([2m-1] \sigma) = &([2m-1] \sigma)^{2m-1} \\
+               &- 2\sum_{k=0}^{m-1}\binom{2m-1}{2k} ([2m-1] \sigma)^{2k}\sum_{j=1}^{N} j^{2(m-k)-1} \leqslant 0.
+            \end{align}
+            Both of these inequalities are easily seen to hold true since the sums over \( k \) contain exclusively positive terms (with an overall minus sign), and the \( k = m-1 \) term in both expressions exactly cancels the first and only positive term. 
+            The inequalities are also seen to saturate if and only if \( m = 1 \) in both the top (\( d=2 \) ) and the bottom (\( d=1 \)) line. &#65517;
+         </p>
+
+         <p align="justify">
+            <b>Lemma III (upper bound):</b> <em>The real positive root \( x_{N,d} \) of \( p_{N,d} \) satisfies \( x_{N,d} < dN(N+1) + \frac{(d-1)(d-2)}{12d} \). </em>
+         </p>
+
+         <p align="justify">
+            <b>Proof of Lemma III:</b> A qualified hypothesis (which will be shown true) is that the root asymptotically approaches (with \( \sigma = N(N+1) \) as before)
+            \[ x_{N,d} \sim d\sigma + \varepsilon_d, \] 
+            where \( \varepsilon_d \) is independent of \(N\). 
+            I make use of an asymptotic expansion (in \( N\)) of the real root and retain the three leading order terms in \(N\) in the binomial expansion of \( p_{N,d} \).
+            As such, while the LHS containes the two leading order terms
+            \[ (d\sigma + \varepsilon_d)^d \sim d^d \sigma^d + d^d \sigma^{d-1} \varepsilon_d, \] 
+            the three leading order terms from the RHS are:
+            \begin{align}
+               & \sum_{k=0}^{d}  \binom{d}{k} (d\sigma + \varepsilon_d)^k \left[1  - (-1)^{d-k} \right] \sum_{j=1}^N j^{d-k} \\
+                &\sim d^d \sigma^d + \frac{(d-1)(d-2)d^{d-2}\sigma^{d-1}}{12d} + (d-1)d^{d-1} \varepsilon_d.
+            \end{align}
+            When equating \( p_{N,d}(x) = 0 \) consistently to this order, we thus see that
+            \[ \varepsilon_d = \frac{(d-1)(d-2)}{12d}. \]
+            Here, I used the fact that \( \sum_{j=1}^N j^3 = (\sigma/2)^2 \).
+            The asymptotic solution is, by virtue of Lemma I, an upper bound on the root \( x_{N,d} \).
+            In fact, by employing the function AsymptoticSolve in Mathematica one can both verify the above and simultaneously find the subleading correction in the asymptotic expansion: 
+            \[ x_{N,d} = d\sigma + \varepsilon_d - \frac{(d-1)(d-2)(2d(d-2)-1)}{180 N^2 d^3} + \mathcal{O}(1/N^3), \]
+            which also shows that the correction is negative.  &#65517;
+         </p>
+
+         <p align="justify">
+            A useful observation can be made by employing clock arithmetic. 
+            I partition putative integer solutions in the congruence classes of \( \sigma = N(N+1) \). 
+            The integers can thus be expressed as the collection of congruence classes, \( \mathbb{Z} = \lbrace [0]_{\sigma}, [1]_{\sigma}, \dots, [\sigma-1]_{\sigma} \rbrace \), where \( [j]_{\sigma} = \lbrace m : m \equiv j~(\mathrm{mod}~\sigma) \rbrace \).
+         </p>
+
+         <p align="justify">
+            <b>Proposition I:</b> <em>Any integer root \( n \) of \( p_{N,d} \) must be an integer multiple of \( \sigma = N(N+1) \), i.e., \( n \in [0]_{\sigma}\). </em>
+         </p>
+
+         <p align="justify">
+            <b>Proof of Proposition I:</b> I prove the proposition by contradiction. 
+            As such, assume that the integral root of \( \tilde{p}_{N,2m} \) (the proof for \( p_{N,2m-1} \) is completely analogous) satisfies \( n \not\in [0]_{\sigma} \), i.e., there exists a \( j\in \lbrace 1, 2, \dots, \sigma-1 \rbrace \) such that \( n \in [j]_{\sigma}\). 
+            The condition that \( \tilde{p}_{N,2m}(n) = 0 \) is equivalent to
+            \[ n^{2m-1} = 2\sum_{k=0}^{m-1}\binom{2m}{2k+1} n^{2k}\sum_{j=1}^{N}j^{2(m-k)-1}. \]
+            Let's calculate the remainder (modulo \( \sigma\)) of both sides of this equation to enforce a contradiction. 
+            Since \( \sum_{j=1}^N j^{2l-1} \) is divisible by \(\sigma/2\) for all \( l\in \mathbb{Z}^+\) (showing this is a nice little exercise and apparently dates back to <a href="https://en.wikipedia.org/wiki/Faulhaber%27s_formula">Johann Faulhaber and 1631</a>) all terms on the RHS are divisible by \( \sigma \), so the right hand side is an element of \( [0]_{\sigma} \). 
+            Since \( n \in [j]_{\sigma} \), there exists an integer \(p\) such that \( n = p \sigma + j\). 
+            Using the binomial expansion on the LHS of the above equation then yields 
+            \[ n^{2m-1} = j^{2m-1} + \sum_{k=0}^{2m-2} \binom{2m-1}{k} (p\sigma)^{2m-1-k} j^k \equiv j^{2m-1}~(\mathrm{mod}~\sigma), \] 
+            which implies that \( n^{2m-1} \not\in [0]_{\sigma}\)
+            Here I used that  \( j\equiv 0 \Rightarrow j^a \equiv 0~(\mathrm{mod}~\sigma)\), so \(j^a \not\equiv 0 \Rightarrow j\not\equiv 0~(\mathrm{mod}~\sigma)\) for any positive integer \(a\). &#65517;
+         </p>
+         
+         <p align="justify">
+            We now have the building blocks to exclude a big chunk of the a priori solution space:
+         </p>
+         
+         <p align="justify">
+            <b>Theorem:</b> <em>The diophantine equation \( p_{N,d}(n) = 0 \) has the unique non-zero integral solution \( n = dN(N+1)\)  for all positive integers \( N \) and \( d \in \lbrace 1, 2 \rbrace\). 
+            For \( d \geqslant 3\) the equation has no non-zero integral solutions for \( d \leqslant d_{c}(N) \), where </em>
+            \[ d_{c}(N) = \Big\lfloor \frac12\left( 3 + 12N(N+1) + \sqrt{9(1+2N)^4-8} \right) \Big \rfloor \sim 3(1+2N)^2. \]
+         </p>
+
+         <p align="justify">
+            <b>Proof of Theorem:</b> Proposition I tells us that a putative integral solution must be of the form \( n = a\sigma \) for some positive integer \( a \), and Lemma II establishes that \( a > d \). 
+            The smallest possible integer multiple of \( \sigma \) is therefore \( n \geqslant (d+1)\sigma\). 
+            On the other hand, from the upper bound of Lemma III one has \( n < d\sigma + \frac{(d-1)(d-2)}{12d}\), which together imply that \( 12d \sigma < (d-1)(d-2) \). 
+            Isolating \( d \) then results in \( d \leqslant d_{c}(N) \), where \( d_c(N) \) is given above. &#65517;
+         </p>
+
+         <p align="justify">
+            In fact, enumerating the first few \( d_c(N) \) (see the table below) reveals that \( d_c \geqslant 26 \).
+            So this demonstrates the minimum dimension in which integer-sided hypercubes could exist that satisfy the volumetric diophantine equation presently studied (for <em>any</em> \(N\)), is 26 (still assuming \( d \geqslant 3 \) since \( d = 1 \) and  \( d = 2 \) have been fully solved).
+            As the expression for \( d_c(N) \) shows, however, the lower dimensional bound rapidly increases with \(N\).
+            For example, the dimension would have to be at least 1322 if you asked for solutions to the \( N = 10 \) problem.
+            One remark is in place before I release the (rest of the) air from the balloon.
+         </p>
+
+         <style>
+            table, th, td {
+               border: 3px solid black;
+               border-collapse: collapse;
+               font-size: 14px;
+            }
+         </style>
+         <table style="width:80%" align="center">
+            <tr>
+               <th>\( N \)</th>
+               <th>1</th>
+               <th>2</th>
+               <th>3</th>
+               <th>4</th>
+               <th>5</th>
+               <th>6</th>
+               <th>7</th>
+               <th>8</th>
+               <th>9</th>
+               <th>10</th>
+               <th>11</th>
+               <th>12</th>
+               <th>13</th>
+               <th>14</th>
+               <th>15</th>
+            </tr>
+            <tr>
+               <th>\( d_c(N) \)</th>
+               <th>26</th>
+               <th>74</th>
+               <th>146</th>
+               <th>242</th>
+               <th>362</th>
+               <th>506</th>
+               <th>674</th>
+               <th>866</th>
+               <th>1082</th>
+               <th>1322</th>
+               <th>1576</th>
+               <th>1874</th>
+               <th>2186</th>
+               <th>3266</th>
+               <th>3674</th>
+            </tr>
+            </table>
+
+         <p align="justify">
+            In <a href="https://en.wikipedia.org/wiki/Lander,_Parkin,_and_Selfridge_conjecture">1967 Lander, Parkin, and Selfridge (LPS) conjectured</a> that the diophantine equation 
+            \[ \sum_{i = 1}^N a_i^k = \sum_{j = 1}^M b_j^k, \] 
+            where \( a_i \neq b_j\) are all positive integers, only has solutions for \(M+N \geqslant k\). 
+            In terms of the diophantine equation \( p_{N,d}(n) = 0 \), this condition becomes \( 2N+1 \geqslant d \), which is easily seen to be inconsistent with \( d \geqslant d_c(N) \). 
+            Hence, if the LPS conjecture is true it follows that \( p_{N,d}(n) = 0 \) has no integral solutions for \( d \geqslant 3 \).             
+         </p>
+
+         <p align="justify">
+            As initially alluded to, after having typed up the above proofs, I stumbled upon <a href="https://arxiv.org/abs/1312.5943v2">arXiv:1312.5943</a>, in which S. Felten and S. M&uuml;ller-Stach prove the absence of solutions to the same equation, \( p_{N,d}(n) = 0 \), for <em>any</em> \( d\geqslant 3\). 
+            In this reference, the authors actually reach some of the same partial results as I did independently above, including Lemma I, Lemma III, and Proposition I. 
+            And apparently, the \( d=2 \) case was first studied by Georges Dostor in 1879 (the year A. Einstein was born)!
+         </p>
+
+         <p align="left">
+            <b>References / further reading:</b> <br>
+            \( \circ \) A. J. Wiles, <a href=""><em>Modular elliptic curves and Fermat's Last Theorem</em></a>, Annals of Mathematics <b>141</b>, 443 (1995).<br>
+            \( \circ \) S. Felten and S. M&uuml;ller-Stach, <a href="https://arxiv.org/abs/1312.5943v2"><em>A diophantine equation for sums of consecutive like powers</em></a>, arXiv:1312.5943 [math.NT], December 20, 2013.<br>
+            \( \circ \) L. J. Lander, T. R. Parkin, and J. L. Selfridge, <a href="https://www.ams.org/journals/mcom/1967-21-099/S0025-5718-1967-0222008-0/"><em>A survey of equal sums of like powers</em></a>, Math. Comp. <b>21</b>, 446 (1967).<br>
+            \( \circ \) D. E. Knuth, <a href="https://www.ams.org/journals/mcom/1993-61-203/S0025-5718-1993-1197512-7/"><em>Johann Faulhaber and sums of powers</em></a>, Math. Comp. <b>61</b>, 277 (1993).<br>
+         </p>
+
+         <hr style="width:80%"> 
+
          <h3>Game(s) of life</h3>
          <h4>Cellular atuomata on Archimedan lattices, December 15, 2024</h4>
 
@@ -688,6 +951,8 @@
       </div>
       <div class="card">
         <h3>Book recommendations</h3>
+        <p> <a href="https://www.goodreads.com/book/show/9272903-game-of-life-cellular-automata"><em>Game of Life Cellular Automata</em></a> by Andrew Adamatzky (2010)</p>
+        <img src="GoL.png" width="128" alt="GameofLife"> <br>
         <p> <a href="https://www.goodreads.com/book/show/415058.My_Best_Mathematical_and_Logic_Puzzles_Dover_Recreational_Math_"><em>My Best Mathematical and Logic Puzzles </em></a> by Martin Gardner (1994) </p>
         <img src="Gardner.png" width="128" alt="Gardner"> <br>
         <p> <a href="https://www.goodreads.com/book/show/40495148-blindness"><em>Blindness</em></a> by Jos&eacute Saramago (1995) </p>
