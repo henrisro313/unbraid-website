@@ -11,276 +11,514 @@
   </div>
 
   <link rel="stylesheet" href="teststyle.css">
+
+  <style>
+  .tab-header {
+    margin-bottom: 10px;
+  }
+  .tab-button {
+    background-color: #F3E5AB;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .tab-button.active {
+    background-color: #F3E5AB;
+  }
+  .tab-content {
+    display: none;
+  }
+  .tab-content.active {
+    display: block;
+  }
+
+  .tab-button {
+  /* outer pop‑out shadow */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+/* raise slightly on hover */
+.tab-button:not(.active):hover {
+  transform: translateY(-2px);
+}
+
+/* active looks pressed in */
+.tab-button.active {
+  /* inset shadow for pressed effect */
+  box-shadow: inset 0 3px 5px rgba(0,0,0,0.3);
+  /* move it down a bit */
+  transform: translateY(2px);
+}
+
+  a:link   { color: #49678D; }
+  a:visited{ color: #800080; }
+  a:hover  { color: #ff6600; text-decoration: underline; }
+  a:active { color: #cc0000; }
+  </style>
   
   <div class="row">
     <div class="leftcolumn">
-      <div class="card">
+  <div class="tab-header">
+    <button class="tab-button active" onclick="openPost(event, 'post6')">Post 6</button>
+    <button class="tab-button" onclick="openPost(event, 'post5')">Post 5</button>
+    <button class="tab-button" onclick="openPost(event, 'post4')">Post 4</button>
+    <button class="tab-button" onclick="openPost(event, 'post3')">Post 3</button>
+    <button class="tab-button" onclick="openPost(event, 'post2')">Post 2</button>
+    <button class="tab-button" onclick="openPost(event, 'post1')">Post 1</button>
+  </div>
 
-         <h3>On power sums of consecutive integers</h3>
-         <h4>A diophantine volumetric hypercube equation, February 10, 2025</h4>
+  <div id="post6" class="tab-content active">
+    <div class="card">
+      <h3>Inscribed squares of metals</h3>
+      <h4>Fermi surface squares in two-dimensional metals, May X, 2025</h4>
 
-         <p align="justify">
-            This post is about an equation that followed me for quite a few years. 
-            It began with an innocent fascination of a series of equations involving sums of square numbers (which I will display shortly) that I stumbled upon in a corner of the internet.
-            The fascination grew into a question during a (boring) dinner party, the question concerning a generalization to arbitrary powers.
-            The question oscillated in and out of my consciousness with varying intensity over the next decade or so.
-            While I eventually managed to establish some answers by myself, the ultimate punctuation to the pondering came when I one day dug into <a href="https://arxiv.org/">arXiv.com</a>&#8212;a moment simultaneously filled with joy and slight disappointment.
-         </p>
+      <p align="justify">
+         Welcome to post 6! I hope you enjoy my new blog layout.
+         In this post I tell you about a fascinatingly simple, yet excruciatingly hard and open problem in pure geometry concerning inscribed squares of Jordan curves. 
+         Motivated by trying to find real world applications of this more-than-century-old problem, I will discuss how inscribed squares might show up in Nature's own Jordan curves, namely Fermi surfaces of metals.
+         A python script to document, showcase, and explore properties of the metal I describe later in this post can be downloaded from my <a href="https://github.com/henrisro313/Games_of_life">GitHub repository</a>.
+       </p>
 
-         <p align="justify">
-            The initial fascination emerged when I saw the following set of questions relating the sum of \( N+1 \) consecutive square numbers to the sum of the next \( N \) square numbers:
-            \begin{align}
-            3^2+4^2 &= 5^2, \\
-            10^2+11^2+12^2 &= 13^2+14^2, \\
-            21^2+22^2+23^2+24^2 &= 25^2+26^2+27^2, \\
-            36^2+37^2+38^2+39^2+40^2 &= 41^2+42^2+43^2+44^2, \\
-            &\hspace{5pt}\vdots
-            \end{align}
-            A satisfying and straightforward generalization of Pythagorean triplets.
-            The equations have a simple geometrical interpretation.
-            The equations relate the total area of \( N+1 \) squares with side lengths being \( N+1 \) consecutive integers to the total area of \( N \) squares with side lengths being the next \( N \) consecutive integers.
-            The equality implies that it must be possible to slice up the initial square (on the &#x2018;Left Hand Side&#x2019; (LHS)) and distribute the pieces onto the next \( N \) squares (still on the LHS) to form a set of \( N \) squares (the ones on the &#x2018;Right Hand Side&#x2019; (RHS)) in which all the side lengths have been increased by \( N \).
-            Here is a self-explanatory example:
-         </p>
+      <p align="justify">
+        In 1911 Otto Toeplitz, a German mathematician, posed a simple geometric question: 
+        does every simple closed curve in the plane contain four points that form the corners of some square? 
+        A simple closed curve, also known as a <a href="https://en.wikipedia.org/wiki/Jordan_curve_theorem">Jordan curve</a>, is a closed curve that does not self-intersect (i.e., it does not cross itself).
+      </p>
 
-         <img src="SquareSolution.png" width="400" alt="squares" align="center">
+      <img src="InscribedSquare.png" width="300" alt="InscribedSample" align="center">
 
-         <p align="justify">
-            Let's begin by posing a couple of simple question: What is the general solution pattern to the above equations? For a given \( N \), are there multiple such integer solutions? 
-            Luckily, it takes no more than a few lines of algebra to find the answers. 
-            We may name the (a priori unknown) rightmost number on the LHS for \( n \).
-            So in the above examples, \( n = 4 \), \( 12 \), \( 24 \),  \(40 \), etc.
-            The equation we want (or at least I want) to solve then reads: 
-            \[ \sum_{j=0}^N (n-j)^2 = \sum_{j=1}^N (n+j)^2. \]
-            Now, isolate \( n^2 \) and carry out the sum to find that 
-            \[ n^2 = \sum_{j=1}^N \left[ (n+j)^2-(n-j)^2 \right] = \sum_{j=1}^N  4nj = 2nN(N+1). \]
-            In other words, there are precisely two solutions for each \( N \), namely \( n = 0 \) and \( n = 2N(N+1) \).
-            The first solution is not very interesting (in fact, it is trivial), and the other one establishes the general solution pattern to the above equation.
-         </p>
+      <p align="justify">  
+        While the problem has been answered definitely and affirmatively in a series of special cases, the question in its general form remains open. 
+        It is one of those beautiful, pure, and seemingly completely useless problems which is so easy to state and understand, yet very hard to prove in full generality.
+        Having accumulated more than 110 years of history and diverse results, the problem usually goes by the name of <em>the square peg problem</em> or <em>the inscribed square problem</em> in the literature (&#x2018;a dear thing goes by many names&#x2019;).
+      </p>
 
-         <p align="justify">
-            What happens if one replaces the powers by some arbitrary (positive) integer, \( d \in \mathbb{Z}^+ \), i.e.,
-            \[ \sum_{j=0}^N (n-j)^d = \sum_{j=1}^N (n+j)^d? \]
-            In particular, are there integer solutions for all \( d \)? 
-            The value \( d \) may be referred to as the <em>dimension</em> of the problem. 
-            In terms of the geometrical interpretation, \( d = 1 \) relates to lines, \( d = 2 \) to squares, \( d = 3 \) to cubes, and \( d \geqslant 4 \) to hypercubes.
-         </p>
-         
-         <p align="justify">
-            To get a feeling for this question, let's start by discussing two simple cases. 
-            The first case is that of \( d = 1 \), which is easily solved (for all \(N \)) by following the same steps as above to find that there is precisely <em>one</em> solution, namely \( n = N(N+1) \). 
-            One may therefore start speculating in whether a general solution could be (or at least be close to) \( n = dN(N+1) \). We will get back to this.
-            The second case is that of \( N = 1 \) for arbitrary \( d \). 
-            The observant reader will already have noticed this as a special case covered by the famous <em>Fermat's Last Theorem</em>, <a href="https://topdocumentaryfilms.com/fermats-last-theorem/">spectacularly proven by (Sir) Andrew Wiles</a> in the 90s.
-            Specifically, the theorem ensures that there are no non-zero integers \( a,b,c,d \), with \( d \geqslant 3 \), such that \( a^d + b^d = c^d \). 
-            So while the case \( N = 1 \) is already ruled out for \( d \geqslant 3 \), could there be solutions for large (enough) \( N \), at least for some \( d \geqslant 3 \)?
-            What about, for example, the case of \( N = 2 \) and \( d = 3 \) (which relates to the volume sum of integer-sided cubes)?
-         </p>
+      <p align="justify">
+         As mentioned above, the problem has been solved in a series of special cases, assuming that various conditions are met by the Jordan curve. 
+         A comprehensive review of the situation as per 2014 was written by Benjamin Matschke in his <a href="http://dx.doi.org/10.1090/noti1100"><em>A Survey on the Square Peg Problem</em></a>.
+         Here are some noticeable cases in which the conjecture has become a theorem by being affirmatively proven as per 2025 (see also references in Matschke's review):
+      
+         <ul align="justify">
+            <li>  Every convex simple closed curve has an inscribed square; first <a href="https://www.jstor.org/stable/2370404?utm_source=chatgpt.com">proven by Arnold Emsch in 1913</a>. 
+                  A convex curve forms the boundary of a convex region, which in turn is a region containing the entire line segment between any two points inside the region.
+                  Good to know. </li>
+            <li>  Every simple closed curve being <em>sufficiently smooth</em> (such as \( C^1 \) and \( C^2 \) curves having at least continuous first and second derivatives, respectively) has an inscribed square; multiple results putting various precise meanings to &#x2018;sufficiently smooth&#x2019; proven over the years.
+                  Noticeable proofs include that of Lev Schnirelman from 1929, advanced by <a href="https://projecteuclid.org/journals/annals-of-mathematics/volume-194/issue-2/The-rectangular-peg-problem/10.4007/annals.2021.194.2.4.short?utm_source=chatgpt.com">Joshua E. Greene and Andrew Lobb in 2021</a>. 
+                  In practice, any simple closed curve you can draw on a piece of paper without letting the tip of the pen halt will in practice be smooth in the above sense. </li>
+            <li>  Every piecewise-linear curve (i.e., polygonal curve) has an inscribed square; proven by <a href="https://arxiv.org/abs/0804.0657?utm_source=chatgpt.com">Igor Pak in 2008</a>.
+                  Serving as a special case: any regular polygon has an inscribed square. DIY: draw/construct a few regular polygons and find their inscribed squares. </li>
+            <li>  Certain symmetric or algebraic simple closed curves have an inscribed square; respectively proven by Mark J. Nielsen in 1995 and <a href="https://arxiv.org/abs/1403.5979?utm_source=chatgpt.com">Wouter van Heijst in 2014</a>.
+                  For example, any centrally symmetric curve (a curve is centrally symmetric about \( O \) if for every point on the curve \( P \in C \), the reflected point across \( O \) is also on the curve, \( 2O-P \in C \)) has an inscribed square.</li>
+         </ul>
+      </p>
+      <!--<p align="left">
+         (E) Every locally monotone simple closed curves has an inscribed square; proven by Walter Stromquist in 1981.
+         A locally monotone simple closed curve refers to a simple closed curve that locally behaves as the graph of a monotonic function (it does not loop over itself in small neighbourhoods).
+      </p>-->
 
-         <img src="NoCubeSolution.png" width="400" alt="cubes" align="center">
+      <p align="justify">
+         The above cases seem to cover a lot of ground.
+         However, more devilish curves such as nowhere differentiable curves or fractal curves fall outside the proven cases. 
+         It is also interesting to note that the proofs are existence proofs, many of which are deeply based on topological arguments. 
+         The proofs are not quantitative (beyond establishing an &#x2018;at least one&#x2019;) and contain no information of just how many inscribed squares any given curve possesses.
+         For example, a circle obviously possesses a continuum of inscribed squares, whereas any ellipse only contains one inscribed square.
+         This means that even an infinitesimal perturbation of a curve (such as infinitesimally squeezing a circle into an ellipse) can reduce the number of inscribed squares from a continuum to one!
+      </p>
 
-         <p align="justify">
-            In general, we are seeking a non-trivial integer root of an equation, so the equation is said to be a <em>diophantine</em> equation.
-            Secondly, the equation relates to volumes of hypercubes, so let's call it a <em>diophantine volumetric hypercube</em> equation.
-            A convenient formulation of the problem is obtained by collecting all terms on one side and seek the integral root(s) of the following polynomial:
-            \begin{align} 
-               p_{N,d}(x) &:= x^d - \sum_{j=1}^N [(x+j)^d-(x-j)^d] \\
-               &= x^d - \sum_{k=0}^{d}  \binom{d}{k} x^k \left[1 - (-1)^{d-k} \right] \sum_{j=1}^N j^{d-k}.
-            \end{align}
-            For convenience (as will become clear in a moment), we will further distinguish between the cases of even and odd dimension \( d \). 
-            For even \( d = 2m \), the polynomial \( p_{N,d} \) has no constant term since terms with even \( k \) vanish. 
-            Thus \( p_{N,2m}(0) = 0 \), which is precisely the trivial (and uninteresting) solution found above for \( d = 2 \).
-            Modulo this trivial solution the polynomial \( p_{N,d} \) for even and odd dimension take the respective forms
-            \begin{align}
-            \tilde{p}_{N,2m}(x) := p_{N,2m}(x)/x &= x^{2m-1} - 2\sum_{k=0}^{m-1}\binom{2m}{2k+1} x^{2k}\sum_{j=1}^{N}j^{2(m-k)-1},  \\
-            p_{N,2m-1}(x) &= x^{2m-1} - 2\sum_{k=0}^{m-1}\binom{2m-1}{2k} x^{2k}\sum_{j=1}^{N}j^{2(m-k)-1}. 
-            \end{align}
-         </p>
-         
-         <p align="justify">
-            <b>Lemma I (monotonicity):</b> <em> The polynomial \( p_{N,d} \) has a unique, non-trivial root in \( \mathbb{R}^+ \). 
-               Moreover, the sequence of (non-zero) roots \( \lbrace x_{N,d}:~p_{N,d}(x_{N,d})=0 \rbrace_{N=1}^{M} \) is monotonically increasing, i.e., \(x_{1,d} < x_{2,d} < x_{3,d} < \dots < x_{M,d}\) for all positive integers \(M\).</em>
-         </p>
+      <p align="justify">
+         The use of topology in arguments such as the above can be illustrated in a related, fully solved, problem asking whether any simple closed curve contains an inscribed <em>rectangle</em>.
+         In a <a href="https://www.youtube.com/watch?v=IQqtsm-bBRU">3Blue1Brown video</a> Grant Sanderson elegantly explains and visualizes the principles of a beautiful proof by Herbert Vaughan (from around 1981).
+         Vaughan's argument uses a clever topological contradiction.
+         He starts by assuming that there exists a simple closed curve containing no inscribed rectangle.
+         Vaughan considers all possible quadrilaterals (4-tuples of points that lie in order) on the curve and maps them into a space based on their shape.
+         Since the curve under consideration is simple and closed, the nearly-rectangular quadrilaterals trace out a continuous loop in the space of shapes. 
+         If no perfect rectangle exists, it turns out that this loop must be the boundary of a M&#246;bius band.
+         But such a loop cannot be continuously deformed within the shape space without passing through an actual rectangle, leading to a contradiction. 
+         Therefore, the original assumption must be false: every simple closed curve contains an inscribed rectangle.
+         In the elegant video by 3Blue1Brown, Sanderson mentions that he would be surprised if the inscribed rectangle problem has any real-world applications.
+         That may be true, yet triggered by this comment, I will in the following elaborate on a thought experiment concerning how one might experimentally detect an inscribed <em>square</em> in Nature, at least in principle.
+         If realizable, it would constitute Nature's own (constructive) existence proof of inscribed squares.
+         First, we need to discuss some basic condensed matter physics concepts.
+      </p>
 
-         <p align="justify">
-            <b>Proof of Lemma I:</b> The proof follows from a special case of <a href="https://en.wikipedia.org/wiki/Descartes%27_rule_of_signs"><em>Descartes' rule of signs</em></a>, which states that for a polynomial \( p \) with real coefficients, the number of real positive roots is the equal to or less than (by an even number) the number of sign changes of the (ordered) coefficients. 
-            Let us apply the rule to the particular case of polynomials of the form:
-            \[ q_{2m-1}(x) = x^{2m-1} - \sum_{k = 0}^{m-1} a_{2k} x^{2k} \]
-            with \( a_{2k} > 0 \) for all \( k \). 
-            Since the polynomial \( q \) possesses one coefficient sign change, Descartes' rule of signs tells us that \( q \) must have precisely one positive real root. 
-            Furthermore, since \( q_{2m-1}(x) < 0 \) for \( x \leqslant 0 \) and the real root of \( q \) is unique, we know that if we have \( a,b \in \mathbb{R} \) such that \( q_{2m-1}(a) < 0 \) and \( q_{2m-1}(b) = 0 \), then \( a < b \). 
-            Since the specific polynomials \( \tilde{p}_{N,2m} \) and \( p_{N,2m-1}(x) \) are both of the form \( q_{2m-1} \) discussed above, one may conclude that \( p_{N,d}(x) \) must have a unique root in \( \mathbb{R}^+\) by virtue of Descartes' rule of signs. 
-            
-            To show that the sequence of roots is monotonically increasing, assume that we have \( x_{N,d} \in \mathbb{R}^+ \) such that \( p_{N,d}(x_{N,d}) = 0 \). 
-            One then has, from the form of \( p_{N,d} \), that
-            \[ p_{N+1,d}(x_{N,d}) = -[(x_{N,d}+N+1)^d-(x_{N,d}-N-1)^d] < 0. \]
-            From the sign of the polynomial, as explained above, we know that if we have \( a, b\in \mathbb{R} \) such that \( p_{N+1,d}(a) < 0 \) and \( p_{N+1,d}(b) = 0 \), then \( b > a \). 
-            Hence the root of \( p_{N+1,d} \) must satisfy \( x_{N+1,d} > x_{N,d} \). &#65517;
-         </p>
+      <p align="justify">
+         In looking for applications of the inscribed square problem, one might start thinking about settings in  which Jordan curves appear in Nature. 
+         As a condensed matter physicist, Fermi surfaces in two dimensions immediately come to mind. 
+         &#x2018;What is a Fermi surface?&#x2019; you might ask. 
+         As an analogy, imagine a circular amphitheater just before a concert, with rows of empty chairs radiating outward from the stage. 
+         People begin filling the seats closest to the stage first, and then gradually occupy rows farther back, moving outward and upward from the center.
+         In metals at low temperatures, electrons (people) fill up energy levels (chairs). 
+         Since metals are formed of periodic structures of ions, it is more convenient to consider these energy levels in momentum space (basically the velocity and its direction) rather than in coordinate space.
+         The Fermi surface is the boundary in this momentum space between the filled states (near the scene) and the empty states (far away from the scene).
+         The precise shape of the &#x2018;amphitheater&#x2019; depends on the atomic structure of the metal, and the height of the boundary (a contour) separating filled and empty states depends on the chemical potential of the metal.
+         The presence of a Fermi surface thus means that there are electrons sitting right at the edge of participating in low-energy excitations.
+         In a metal this edge is responsible for electrical conductivity since electrons near the Fermi surface can be excited with available energy states just above them.
+         At higher temperatures, the Fermi surface smears, and more and more states further away from the surface become activated.
+         Due to the periodic structure of the ion lattice, the Fermi surface is most often depicted in the <em>Brillouin zone</em>, which is the smallest (periodic) region/cell which captures all the unique electron behaviours in the crystal.
+       </p>
 
-         <p align="justify">
-            <b>Lemma II (lower bound):</b> <em>The real positive root \( x_{N,d} \) of \( p_{N,d} \) satisfies \( x_{N,d} \geqslant dN(N+1) \) where the inequality is saturated if and only if \( d \in \lbrace 1, 2 \rbrace \).</em>
-         </p>
+       <p align="justify">
+         Serving as an exemplary example of a real Fermi surface, here is beautiful and high-resolution experimental data (<a href="https://journals.aps.org/prx/abstract/10.1103/PhysRevX.9.021048">A. Tamai et al. (2019)</a>) aquired through Angle-resolved photoemission spectroscopy (ARPES) on strontium ruthenate (\(\mathrm{Sr}_2\mathrm{RuO}_4 \)):
+       </p>
 
-         <p align="justify">
-            <b>Proof of Lemma II:</b> For notational convenience, I define \( \sigma := N(N+1) \). 
-            Alluding to the proof of Lemma I, the inequalities that need to be established to prove Lemma II are:
-            \begin{align}
-               \tilde{p}_{N,2m}(2m \sigma) = &(2m \sigma)^{2m-1} \\
-               &- 2\sum_{k=0}^{m-1}\binom{2m}{2k+1} (2m \sigma)^{2k}\sum_{j=1}^{N}j^{2(m-k)-1} \leqslant 0, \\
-               p_{N,2m-1}([2m-1] \sigma) = &([2m-1] \sigma)^{2m-1} \\
-               &- 2\sum_{k=0}^{m-1}\binom{2m-1}{2k} ([2m-1] \sigma)^{2k}\sum_{j=1}^{N} j^{2(m-k)-1} \leqslant 0.
-            \end{align}
-            Both of these inequalities are easily seen to hold true since the sums over \( k \) contain exclusively positive terms (with an overall minus sign), and the \( k = m-1 \) term in both expressions exactly cancels the first and only positive term. 
-            The inequalities are also seen to saturate if and only if \( m = 1 \) in both the top (\( d=2 \) ) and the bottom (\( d=1 \)) line. &#65517;
-         </p>
+      <img src="FS_Tamai.png" width="250" alt="Tamai" align="center">
 
-         <p align="justify">
-            <b>Lemma III (upper bound):</b> <em>The real positive root \( x_{N,d} \) of \( p_{N,d} \) satisfies \( x_{N,d} < dN(N+1) + \frac{(d-1)(d-2)}{12d} \). </em>
-         </p>
+      <p align="justify">
+         This is a layered material producing exceptionally clean crystals, with an electronic structure comprising three clearly resolvable (nearly two-dimensional) Fermi surface sheets (labelled \(\alpha\), \(\beta\), and \(\gamma\)), i.e., three Jordan curves.
+         Note that this crystal permits a tetragonal symmetry, which means that the Fermi surface is fourfold symmetric. 
+         This symmetry can be lifted by applying uniaxial strain along one of the crystal axes.
+         I did my PhD on the controversial superconducting state of strontium ruthenate, but that is a (fascinating) story for another time.
+         Here, I just want to emphasize that Fermi surfaces are directly measurable, and they exist in all metals (a Fermi surface is a defining feature of a metal).
+       </p>
 
-         <p align="justify">
-            <b>Proof of Lemma III:</b> A qualified hypothesis (which will be shown true) is that the root asymptotically approaches (with \( \sigma = N(N+1) \) as before)
-            \[ x_{N,d} \sim d\sigma + \varepsilon_d, \] 
-            where \( \varepsilon_d \) is independent of \(N\). 
-            I make use of an asymptotic expansion (in \( N\)) of the real root and retain the three leading order terms in \(N\) in the binomial expansion of \( p_{N,d} \).
-            As such, while the LHS containes the two leading order terms
-            \[ (d\sigma + \varepsilon_d)^d \sim d^d \sigma^d + d^d \sigma^{d-1} \varepsilon_d, \] 
-            the three leading order terms from the RHS are:
-            \begin{align}
-               & \sum_{k=0}^{d}  \binom{d}{k} (d\sigma + \varepsilon_d)^k \left[1  - (-1)^{d-k} \right] \sum_{j=1}^N j^{d-k} \\
-                &\sim d^d \sigma^d + \frac{(d-1)(d-2)d^{d-2}\sigma^{d-1}}{12d} + (d-1)d^{d-1} \varepsilon_d.
-            \end{align}
-            When equating \( p_{N,d}(x) = 0 \) consistently to this order, we thus see that
-            \[ \varepsilon_d = \frac{(d-1)(d-2)}{12d}. \]
-            Here, I used the fact that \( \sum_{j=1}^N j^3 = (\sigma/2)^2 \).
-            The asymptotic solution is, by virtue of Lemma I, an upper bound on the root \( x_{N,d} \).
-            In fact, by employing the function AsymptoticSolve in Mathematica one can both verify the above and simultaneously find the subleading correction in the asymptotic expansion: 
-            \[ x_{N,d} = d\sigma + \varepsilon_d - \frac{(d-1)(d-2)(2d(d-2)-1)}{180 N^2 d^3} + \mathcal{O}(1/N^3), \]
-            which also shows that the correction is negative.  &#65517;
-         </p>
+      <p align="justify">
+         Now that you have seen how Jordan curves exist in (two-dimensional) metals, we consider how an inscribed square of these curves might display itself.
+         We realize that had inscribed squares of metals yielded unique scattering characteristics, they would already have been detected all over the place (and as far as I know, they are not).
+         As such, the metallic structure will somehow have to be tuned for these states to become favoured/measurable in probes sensitive to low-temperature scattering of electronic states on the Fermi surface.
+         Experimental probes of interest with regards to detecting inscribed square scattering include: ARPES (directly resolving the Fermi surface and scattering), Scanning Tunneling Microscopy (STM) and in particular Quasiparticle Interference (QPI) (probing the local density of states and identifying momentum-resolved electronic scattering states), and inelastic neutron scattering (probing <a href="https://www.physicsforums.com/threads/fermi-surface-nesting-explained.95989/">Fermi surface nesting</a> via energy and momentum transfer with neutrons). 
+         To illustrate the basic idea, I present a constructed example of a metal in two dimensions with tetragonal crystal symmetry:
+      </p>
 
-         <p align="justify">
-            A useful observation can be made by employing clock arithmetic. 
-            I partition putative integer solutions in the congruence classes of \( \sigma = N(N+1) \). 
-            The integers can thus be expressed as the collection of congruence classes, \( \mathbb{Z} = \lbrace [0]_{\sigma}, [1]_{\sigma}, \dots, [\sigma-1]_{\sigma} \rbrace \), where \( [j]_{\sigma} = \lbrace m : m \equiv j~(\mathrm{mod}~\sigma) \rbrace \).
-         </p>
+      <img src="FS_construct.png" width="360" alt="FS_const" align="center">
 
-         <p align="justify">
-            <b>Proposition I:</b> <em>Any integer root \( n \) of \( p_{N,d} \) must be an integer multiple of \( \sigma = N(N+1) \), i.e., \( n \in [0]_{\sigma}\). </em>
-         </p>
+      <p align="justify">
+         Shown in the figure is the <font color="#20B2AA">Fermi surface</font> of my constructed metal (which has nothing to do with strontium ruthenate), alongside an inscribed square (dashed line) and three of its corner momenta (\( \boldsymbol{q}_1 \), \( \boldsymbol{q}_2 \), and \( \boldsymbol{q}_3 \)).
+         I have also illustrated electronic scattering of two particular momentum differences related to the square, namely by \( \boldsymbol{Q}_1 = \boldsymbol{q}_2 - \boldsymbol{q}_1 \) (with a <font color="#B59FDA">Fermi surface shifted by \( \boldsymbol{Q}_1 \)</font>) and by \( \boldsymbol{Q}_2 = \boldsymbol{q}_3 - \boldsymbol{q}_1 \) (with a <font color="#F096A8">Fermi surface shifted by \( \boldsymbol{Q}_2 \)</font>).
+         Among the scattering states defined by momentum difference on the Fermi surface, we are ultimately seeking an experimental signature of \( \boldsymbol{Q}_1 \) and \( \boldsymbol{Q}_2 \) since their positions in the Brillouin zone would uniquely characterize an inscribed square of the Fermi surface by (for example):
+         \[ \lvert \boldsymbol{Q}_2 \rvert / \lvert \boldsymbol{Q}_1 \rvert = \sqrt{2} \] and \[  \boldsymbol{Q}_2 \cdot \boldsymbol{Q}_1 / \lvert \boldsymbol{Q}_1 \rvert^2 = 1. \]
+         To &#x2018;tune&#x2019; the metal such that these particular momenta stick out among the scattering states is indeed the crux of the problem.
+         However, serving as a proof of principle, I will provide numerical calculations of the susceptibility for my metal proving that this metal in fact does the job of clearly revealing \( \boldsymbol{Q}_1 \) and \( \boldsymbol{Q}_2 \).
+      </p>
 
-         <p align="justify">
-            <b>Proof of Proposition I:</b> I prove the proposition by contradiction. 
-            As such, assume that the integral root of \( \tilde{p}_{N,2m} \) (the proof for \( p_{N,2m-1} \) is completely analogous) satisfies \( n \not\in [0]_{\sigma} \), i.e., there exists a \( j\in \lbrace 1, 2, \dots, \sigma-1 \rbrace \) such that \( n \in [j]_{\sigma}\). 
-            The condition that \( \tilde{p}_{N,2m}(n) = 0 \) is equivalent to
-            \[ n^{2m-1} = 2\sum_{k=0}^{m-1}\binom{2m}{2k+1} n^{2k}\sum_{j=1}^{N}j^{2(m-k)-1}. \]
-            Let's calculate the remainder (modulo \( \sigma\)) of both sides of this equation to enforce a contradiction. 
-            Since \( \sum_{j=1}^N j^{2l-1} \) is divisible by \(\sigma/2\) for all \( l\in \mathbb{Z}^+\) (showing this is a nice little exercise and apparently dates back to <a href="https://en.wikipedia.org/wiki/Faulhaber%27s_formula">Johann Faulhaber and 1631</a>) all terms on the RHS are divisible by \( \sigma \), so the right hand side is an element of \( [0]_{\sigma} \). 
-            Since \( n \in [j]_{\sigma} \), there exists an integer \(p\) such that \( n = p \sigma + j\). 
-            Using the binomial expansion on the LHS of the above equation then yields 
-            \[ n^{2m-1} = j^{2m-1} + \sum_{k=0}^{2m-2} \binom{2m-1}{k} (p\sigma)^{2m-1-k} j^k \equiv j^{2m-1}~(\mathrm{mod}~\sigma), \] 
-            which implies that \( n^{2m-1} \not\in [0]_{\sigma}\)
-            Here I used that  \( j\equiv 0 \Rightarrow j^a \equiv 0~(\mathrm{mod}~\sigma)\), so \(j^a \not\equiv 0 \Rightarrow j\not\equiv 0~(\mathrm{mod}~\sigma)\) for any positive integer \(a\). &#65517;
-         </p>
-         
-         <p align="justify">
-            We now have the building blocks to exclude a big chunk of the a priori solution space:
-         </p>
-         
-         <p align="justify">
-            <b>Theorem:</b> <em>The diophantine equation \( p_{N,d}(n) = 0 \) has the unique non-zero integral solution \( n = dN(N+1)\)  for all positive integers \( N \) and \( d \in \lbrace 1, 2 \rbrace\). 
-            For \( d \geqslant 3\) the equation has no non-zero integral solutions for \( d \leqslant d_{c}(N) \), where </em>
-            \[ d_{c}(N) = \Big\lfloor \frac12\left( 3 + 12N(N+1) + \sqrt{9(1+2N)^4-8} \right) \Big \rfloor \sim 3(1+2N)^2. \]
-         </p>
+      <p align="justify">
+         A susceptibility of a metal characterizes how electrons respond to disturbances, how they scatter and reorganize, and how collective excitations behave. 
+         The <em>Lindhard function</em> plays a central role in this regard. It is a mathematical function describing linear density response of non-interacting electrons to a weak external potential and reads (at zero frequency):
+         \[ \chi(\boldsymbol{q}) = -\frac{1}{(2\pi)^2} \int \mathrm{d}\boldsymbol{p} \frac{f(\xi(\boldsymbol{p})) - f(\xi(\boldsymbol{p} + \boldsymbol{q}))}{\xi(\boldsymbol{p}) - \xi(\boldsymbol{p} + \boldsymbol{q})}. \]
+         Here \( \xi(\boldsymbol{p}) \) is the <em>dispersion relation</em> (the &#x2018;amphiteater&#x2019; of which a contour defines the Fermi surface) and \( f(E) = 1/(1+e^{E/(k_B T)} ) \) is the <em>Fermi function</em> (describing the influence of temperature on the population of electrons).
+         Serving as input for this function, here is what the dispersion relation of my metal looks like (including contours at \( \pm 50 \) meV around the Fermi surface):
+      </p>
 
-         <p align="justify">
-            <b>Proof of Theorem:</b> Proposition I tells us that a putative integral solution must be of the form \( n = a\sigma \) for some positive integer \( a \), and Lemma II establishes that \( a > d \). 
-            The smallest possible integer multiple of \( \sigma \) is therefore \( n \geqslant (d+1)\sigma\). 
-            On the other hand, from the upper bound of Lemma III one has \( n < d\sigma + \frac{(d-1)(d-2)}{12d}\), which together imply that \( 12d \sigma < (d-1)(d-2) \). 
-            Isolating \( d \) then results in \( d \leqslant d_{c}(N) \), where \( d_c(N) \) is given above. &#65517;
-         </p>
+      <img src="Dispersion.png" width="360" alt="DISP" align="center">
 
-         <p align="justify">
-            In fact, enumerating the first few \( d_c(N) \) (see the table below) reveals that \( d_c \geqslant 26 \).
-            So this demonstrates the minimum dimension in which integer-sided hypercubes could exist that satisfy the volumetric diophantine equation presently studied (for <em>any</em> \(N\)), is 26 (still assuming \( d \geqslant 3 \) since \( d = 1 \) and  \( d = 2 \) have been fully solved).
-            As the expression for \( d_c(N) \) shows, however, the lower dimensional bound rapidly increases with \(N\).
-            For example, the dimension would have to be at least 1322 if you asked for solutions to the \( N = 10 \) problem.
-            One remark is in place before I release the (rest of the) air from the balloon.
-         </p>
+      <p align="justify">
+         The susceptibility was calculated at a(n illustrative) temperature of \( T = 70 \)K, at which Fermi surface smearing due to temperature is small (\( k_B T \approx 6 \) meV), using a momentum resolution of \( 51 \times 51 \) points in the first quadrant.
+         The result shows that the Lindhard function peaks at precisely the locations of the momentum differences corresponding to the corners of the inscribed square depicted above:
+      </p>
 
-         <style>
-            table, th, td {
-               border: 3px solid black;
-               border-collapse: collapse;
-               font-size: 14px;
-            }
-         </style>
-         <table style="width:80%" align="center">
-            <tr>
-               <th>\( N \)</th>
-               <th>1</th>
-               <th>2</th>
-               <th>3</th>
-               <th>4</th>
-               <th>5</th>
-               <th>6</th>
-               <th>7</th>
-               <th>8</th>
-               <th>9</th>
-               <th>10</th>
-               <th>11</th>
-               <th>12</th>
-               <th>13</th>
-               <th>14</th>
-               <th>15</th>
-            </tr>
-            <tr>
-               <th>\( d_c(N) \)</th>
-               <th>26</th>
-               <th>74</th>
-               <th>146</th>
-               <th>242</th>
-               <th>362</th>
-               <th>506</th>
-               <th>674</th>
-               <th>866</th>
-               <th>1082</th>
-               <th>1322</th>
-               <th>1576</th>
-               <th>1874</th>
-               <th>2186</th>
-               <th>3266</th>
-               <th>3674</th>
-            </tr>
-            </table>
+      <img src="Susceptibility.png" width="550" alt="Suscep" align="center">
 
-         <p align="justify">
-            In <a href="https://en.wikipedia.org/wiki/Lander,_Parkin,_and_Selfridge_conjecture">1967 Lander, Parkin, and Selfridge (LPS) conjectured</a> that the diophantine equation 
-            \[ \sum_{i = 1}^N a_i^k = \sum_{j = 1}^M b_j^k, \] 
-            where \( a_i \neq b_j\) are all positive integers, only has solutions for \(M+N \geqslant k\). 
-            In terms of the diophantine equation \( p_{N,d}(n) = 0 \), this condition becomes \( 2N+1 \geqslant d \), which is easily seen to be inconsistent with \( d \geqslant d_c(N) \). 
-            Hence, if the LPS conjecture is true it follows that \( p_{N,d}(n) = 0 \) has no integral solutions for \( d \geqslant 3 \).             
-         </p>
+      <p align="justify">
+         In fact, using the susceptibility data alone yields values of \( \boldsymbol{Q}_1 \) and \( \boldsymbol{Q}_2 \) (<font color="#8A2BE2">\(\times\)</font>) indestinguishable of the predicted values (<font color="#3CB371">\(\blacklozenge\)</font> and <font color="#FF4500">\(\blacklozenge\)</font> based on precalculating the inscribed square from \( \xi \) alone) within the quoted numerical resolution!
+         So why does susceptibility peak at these particular values of the momentum for this dispersion? 
+         If you paid attention to what was said earlier, you might also wonder: why does the Lindhard function select/favour this particular inscribed square in the continuum of inscribed squares that exist for such a crystal (having fourfold symmetry)?
+      </p>
 
-         <p align="justify">
-            As initially alluded to, after having typed up the above proofs, I stumbled upon <a href="https://arxiv.org/abs/1312.5943v2">arXiv:1312.5943</a>, in which S. Felten and S. M&uuml;ller-Stach prove the absence of solutions to the same equation, \( p_{N,d}(n) = 0 \), for <em>any</em> \( d\geqslant 3\). 
-            In this reference, the authors actually reach some of the same partial results as I did independently above, including Lemma I, Lemma III, and Proposition I. 
-            And apparently, the \( d=2 \) case was first studied by Georges Dostor in 1879 (the year A. Einstein was born)!
-         </p>
+      <p align="justify">
+         In the (around 20) iterations leading up to the dispersion I presented above, I have qualified reasons to believe the answer to this question lies in the following key factors.
+         The dispersion was designed to have <em>Fermi surface nesting</em> to boost the selection of  \( \boldsymbol{Q}_1 \) and \( \boldsymbol{Q}_2 \) in \( \chi \).
+         Looking back at the third figure (consider the Fermi surfaces in <font color=#20B2AA>this</font> and <font color=#F096A8>this</font> color), it can be seen that this is ensured geometrically by the flat regions of the Fermi surface, making, e.g., \( \xi(\boldsymbol{p}) \approx \xi(\boldsymbol{p} + \boldsymbol{Q}_2) \) for a range of \( \boldsymbol{p} \) in vicinity of such a flat region. 
+         In turn, this makes the denominator in the integrand of \( \chi \) small, enhancing the response.
+         For the scattering corresponding to \( \boldsymbol{Q}_1 \) (consider now the Fermi surfaces in <font color=#20B2AA>this</font> and <font color=#B59FDA>this</font> color), the geometric effect above is not significantly boosting nesting though.
+         To compensate for this, I have made sure the <em>Fermi velocity</em>, \( v_F(\boldsymbol{p}) = \lvert \nabla \xi(\boldsymbol{p}) \rvert \), is suppressed at \( \boldsymbol{q}_2 \) (in fact, I have made the Fermi velocity suppressed at all the corners of the inscribed square shown earlier).
+         Looking back at the dispersion shown earlier, this is reflected in the nearly flat regions in \( \xi \) right above the shown energy contours.
+         So should you go metal-hunting to look for these signatures in an experiment, you might want to keep these in mind.
+      </p>
 
-         <p align="left">
-            <b>References / further reading:</b> <br>
-            \( \circ \) A. J. Wiles, <a href=""><em>Modular elliptic curves and Fermat's Last Theorem</em></a>, Annals of Mathematics <b>141</b>, 443 (1995).<br>
-            \( \circ \) S. Felten and S. M&uuml;ller-Stach, <a href="https://arxiv.org/abs/1312.5943v2"><em>A diophantine equation for sums of consecutive like powers</em></a>, arXiv:1312.5943 [math.NT], December 20, 2013.<br>
-            \( \circ \) L. J. Lander, T. R. Parkin, and J. L. Selfridge, <a href="https://www.ams.org/journals/mcom/1967-21-099/S0025-5718-1967-0222008-0/"><em>A survey of equal sums of like powers</em></a>, Math. Comp. <b>21</b>, 446 (1967).<br>
-            \( \circ \) D. E. Knuth, <a href="https://www.ams.org/journals/mcom/1993-61-203/S0025-5718-1993-1197512-7/"><em>Johann Faulhaber and sums of powers</em></a>, Math. Comp. <b>61</b>, 277 (1993).<br>
-         </p>
+      <p align="justify">
+         Tweaking the band structure of a metal is not as trivial as I have made it sound from theory, but there are definitely a wide range of tools that can be applied to tune a metal dispersion, such as: pressure (hydrostatic or uniaxial), chemical substitution, external magnetic or electric fields, twisting multilayered systems (Moire superlattices).
+         The above ideas may or may not provide a possible direction to identify inscribed squares in Nature. At any rate I hope it stimulated your curiosity.
+         I round off this post with a couple of open questions building on the above ideas:
+         <ul align="justify">
+            <li>Is it possible to design a dispersion with scattering peaks corresponding to an inscribed square (like the one above) in less symmetric scenarios, such as in two-fold symmetric (\(D_{2\mathrm{h}}\)) or in non-centrosymmetric crystals?</li>
+            <li>Can one design a more robust experimental signature which is not sensitive to tiny distortions of the dispersion, such as a topologically rooted signature bearing inspiration from, e.g., <a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.130.096301">P. M. Tam and C. L. Kane (2023)?</a></li>
+            <li>Can the momenta of an inscribed square drive instabilities and ordering such as charge density waves (CDW), spin density waves (SPW), pair density waves (PDW), or superconductivity?</li>
+         </ul>
+      </p>
 
-         <hr style="width:80%"> 
+      <p align="left">
+        <b>References / further reading:</b> <br>
+        \( \circ \) B. Matschke, <a href="http://dx.doi.org/10.1090/noti1100"><em>A Survey on the Square Peg Problem</em></a>, Notices of the AMS <b>61</b>, 4 (2014) <br>
+        \( \circ \) M. D. Meyerson, <a href="https://topology.nipissingu.ca/tp/reprints/v06/tp06107.pdf"><em>Balancing acts</em></a>, Topology Proc. <b>6</b>, 1 (1981) [referencing Vaughan's proof] <br>
+        \( \circ \) V. Klee and S. Wagon, <a href="https://archive.org/details/oldnewunsolvedpr0000klee/page/58/mode/2up.pdf"><em>Old and new unsolved problems in plane geometry and number theory</em></a>, The Dolciani Mathematical Expositions <b>11</b>, Cambridge University Press (1991) <br>
+        \( \circ \) A. Tamai et al., <a href="https://journals.aps.org/prx/abstract/10.1103/PhysRevX.9.021048"><em>High-Resolution Photoemission on \(\mathit{Sr}_2\mathit{RuO}_4 \) Reveals Correlation-Enhanced Effective Spin-Orbit Coupling and Dominantly Local Self-Energies</em></a>, Physical Review X <b>9</b>, 021048 (2019) <br>
+        \( \circ \) P. M. Tam and C. L. Kane, <a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.130.096301"><em>Probing the Fermi sea topology by Andreev state transport</em></a>, Physical Review Letters <b>130</b>, 09631 (2023)
+        </p>
+        
+    </div>
+  </div>
 
-         <h3>Game(s) of life</h3>
-         <h4>Cellular atuomata on Archimedan lattices, December 15, 2024</h4>
+  <div id="post5" class="tab-content">
+    <div class="card">
+      <h3>On power sums of consecutive integers</h3>
+      <h4>A diophantine volumetric hypercube equation, February 10, 2025</h4>
+        <p align="justify">
+        This post is about an equation that followed me for quite a few years. 
+        It began with an innocent fascination of a series of equations involving sums of square numbers (which I will display shortly) that I stumbled upon in a corner of the internet.
+        The fascination grew into a question during a (boring) dinner party, the question concerning a generalization to arbitrary powers.
+        The question oscillated in and out of my consciousness with varying intensity over the next decade or so.
+        While I eventually managed to establish some answers by myself, the ultimate punctuation to the pondering came when I one day dug into <a href="https://arxiv.org/">arXiv.com</a>&#8212;a moment simultaneously filled with joy and slight disappointment.
+        </p>
+
+        <p align="justify">
+        The initial fascination emerged when I saw the following set of questions relating the sum of \( N+1 \) consecutive square numbers to the sum of the next \( N \) square numbers:
+        \begin{align}
+        3^2+4^2 &= 5^2, \\
+        10^2+11^2+12^2 &= 13^2+14^2, \\
+        21^2+22^2+23^2+24^2 &= 25^2+26^2+27^2, \\
+        36^2+37^2+38^2+39^2+40^2 &= 41^2+42^2+43^2+44^2, \\
+        &\hspace{5pt}\vdots
+        \end{align}
+        A satisfying and straightforward generalization of Pythagorean triplets.
+        The equations have a simple geometrical interpretation.
+        The equations relate the total area of \( N+1 \) squares with side lengths being \( N+1 \) consecutive integers to the total area of \( N \) squares with side lengths being the next \( N \) consecutive integers.
+        The equality implies that it must be possible to slice up the initial square (on the &#x2018;Left Hand Side&#x2019; (LHS)) and distribute the pieces onto the next \( N \) squares (still on the LHS) to form a set of \( N \) squares (the ones on the &#x2018;Right Hand Side&#x2019; (RHS)) in which all the side lengths have been increased by \( N \).
+        Here is a self-explanatory example:
+        </p>
+
+        <img src="SquareSolution.png" width="400" alt="squares" align="center">
+
+        <p align="justify">
+        Let's begin by posing a couple of simple question: What is the general solution pattern to the above equations? For a given \( N \), are there multiple such integer solutions? 
+        Luckily, it takes no more than a few lines of algebra to find the answers. 
+        We may name the (a priori unknown) rightmost number on the LHS for \( n \).
+        So in the above examples, \( n = 4 \), \( 12 \), \( 24 \),  \(40 \), etc.
+        The equation we want (or at least I want) to solve then reads: 
+        \[ \sum_{j=0}^N (n-j)^2 = \sum_{j=1}^N (n+j)^2. \]
+        Now, isolate \( n^2 \) and carry out the sum to find that 
+        \[ n^2 = \sum_{j=1}^N \left[ (n+j)^2-(n-j)^2 \right] = \sum_{j=1}^N  4nj = 2nN(N+1). \]
+        In other words, there are precisely two solutions for each \( N \), namely \( n = 0 \) and \( n = 2N(N+1) \).
+        The first solution is not very interesting (in fact, it is trivial), and the other one establishes the general solution pattern to the above equation.
+        </p>
+
+        <p align="justify">
+        What happens if one replaces the powers by some arbitrary (positive) integer, \( d \in \mathbb{Z}^+ \), i.e.,
+        \[ \sum_{j=0}^N (n-j)^d = \sum_{j=1}^N (n+j)^d? \]
+        In particular, are there integer solutions for all \( d \)? 
+        The value \( d \) may be referred to as the <em>dimension</em> of the problem. 
+        In terms of the geometrical interpretation, \( d = 1 \) relates to lines, \( d = 2 \) to squares, \( d = 3 \) to cubes, and \( d \geqslant 4 \) to hypercubes.
+        </p>
+     
+        <p align="justify">
+        To get a feeling for this question, let's start by discussing two simple cases. 
+        The first case is that of \( d = 1 \), which is easily solved (for all \(N \)) by following the same steps as above to find that there is precisely <em>one</em> solution, namely \( n = N(N+1) \). 
+        One may therefore start speculating in whether a general solution could be (or at least be close to) \( n = dN(N+1) \). We will get back to this.
+        The second case is that of \( N = 1 \) for arbitrary \( d \). 
+        The observant reader will already have noticed this as a special case covered by the famous <em>Fermat's Last Theorem</em>, <a href="https://topdocumentaryfilms.com/fermats-last-theorem/">spectacularly proven by (Sir) Andrew Wiles</a> in the 90s.
+        Specifically, the theorem ensures that there are no non-zero integers \( a,b,c,d \), with \( d \geqslant 3 \), such that \( a^d + b^d = c^d \). 
+        So while the case \( N = 1 \) is already ruled out for \( d \geqslant 3 \), could there be solutions for large (enough) \( N \), at least for some \( d \geqslant 3 \)?
+        What about, for example, the case of \( N = 2 \) and \( d = 3 \) (which relates to the volume sum of integer-sided cubes)?
+        </p>
+
+        <img src="NoCubeSolution.png" width="400" alt="cubes" align="center">
+
+        <p align="justify">
+        In general, we are seeking a non-trivial integer root of an equation, so the equation is said to be a <em>diophantine</em> equation.
+        Secondly, the equation relates to volumes of hypercubes, so let's call it a <em>diophantine volumetric hypercube</em> equation.
+        A convenient formulation of the problem is obtained by collecting all terms on one side and seek the integral root(s) of the following polynomial:
+        \begin{align} 
+           p_{N,d}(x) &:= x^d - \sum_{j=1}^N [(x+j)^d-(x-j)^d] \\
+           &= x^d - \sum_{k=0}^{d}  \binom{d}{k} x^k \left[1 - (-1)^{d-k} \right] \sum_{j=1}^N j^{d-k}.
+        \end{align}
+        For convenience (as will become clear in a moment), we will further distinguish between the cases of even and odd dimension \( d \). 
+        For even \( d = 2m \), the polynomial \( p_{N,d} \) has no constant term since terms with even \( k \) vanish. 
+        Thus \( p_{N,2m}(0) = 0 \), which is precisely the trivial (and uninteresting) solution found above for \( d = 2 \).
+        Modulo this trivial solution the polynomial \( p_{N,d} \) for even and odd dimension take the respective forms
+        \begin{align}
+        \tilde{p}_{N,2m}(x) := p_{N,2m}(x)/x &= x^{2m-1} - 2\sum_{k=0}^{m-1}\binom{2m}{2k+1} x^{2k}\sum_{j=1}^{N}j^{2(m-k)-1},  \\
+        p_{N,2m-1}(x) &= x^{2m-1} - 2\sum_{k=0}^{m-1}\binom{2m-1}{2k} x^{2k}\sum_{j=1}^{N}j^{2(m-k)-1}. 
+        \end{align}
+        </p>
+     
+        <p align="justify">
+        <b>Lemma I (monotonicity):</b> <em> The polynomial \( p_{N,d} \) has a unique, non-trivial root in \( \mathbb{R}^+ \). 
+           Moreover, the sequence of (non-zero) roots \( \lbrace x_{N,d}:~p_{N,d}(x_{N,d})=0 \rbrace_{N=1}^{M} \) is monotonically increasing, i.e., \(x_{1,d} < x_{2,d} < x_{3,d} < \dots < x_{M,d}\) for all positive integers \(M\).</em>
+        </p>
+
+        <p align="justify">
+        <b>Proof of Lemma I:</b> The proof follows from a special case of <a href="https://en.wikipedia.org/wiki/Descartes%27_rule_of_signs"><em>Descartes' rule of signs</em></a>, which states that for a polynomial \( p \) with real coefficients, the number of real positive roots is the equal to or less than (by an even number) the number of sign changes of the (ordered) coefficients. 
+        Let us apply the rule to the particular case of polynomials of the form:
+        \[ q_{2m-1}(x) = x^{2m-1} - \sum_{k = 0}^{m-1} a_{2k} x^{2k} \]
+        with \( a_{2k} > 0 \) for all \( k \). 
+        Since the polynomial \( q \) possesses one coefficient sign change, Descartes' rule of signs tells us that \( q \) must have precisely one positive real root. 
+        Furthermore, since \( q_{2m-1}(x) < 0 \) for \( x \leqslant 0 \) and the real root of \( q \) is unique, we know that if we have \( a,b \in \mathbb{R} \) such that \( q_{2m-1}(a) < 0 \) and \( q_{2m-1}(b) = 0 \), then \( a < b \). 
+        Since the specific polynomials \( \tilde{p}_{N,2m} \) and \( p_{N,2m-1}(x) \) are both of the form \( q_{2m-1} \) discussed above, one may conclude that \( p_{N,d}(x) \) must have a unique root in \( \mathbb{R}^+\) by virtue of Descartes' rule of signs. 
+        
+        To show that the sequence of roots is monotonically increasing, assume that we have \( x_{N,d} \in \mathbb{R}^+ \) such that \( p_{N,d}(x_{N,d}) = 0 \). 
+        One then has, from the form of \( p_{N,d} \), that
+        \[ p_{N+1,d}(x_{N,d}) = -[(x_{N,d}+N+1)^d-(x_{N,d}-N-1)^d] < 0. \]
+        From the sign of the polynomial, as explained above, we know that if we have \( a, b\in \mathbb{R} \) such that \( p_{N+1,d}(a) < 0 \) and \( p_{N+1,d}(b) = 0 \), then \( b > a \). 
+        Hence the root of \( p_{N+1,d} \) must satisfy \( x_{N+1,d} > x_{N,d} \). &#65517;
+        </p>
+
+        <p align="justify">
+        <b>Lemma II (lower bound):</b> <em>The real positive root \( x_{N,d} \) of \( p_{N,d} \) satisfies \( x_{N,d} \geqslant dN(N+1) \) where the inequality is saturated if and only if \( d \in \lbrace 1, 2 \rbrace \).</em>
+        </p>
+
+        <p align="justify">
+        <b>Proof of Lemma II:</b> For notational convenience, I define \( \sigma := N(N+1) \). 
+        Alluding to the proof of Lemma I, the inequalities that need to be established to prove Lemma II are:
+        \begin{align}
+           \tilde{p}_{N,2m}(2m \sigma) = &(2m \sigma)^{2m-1} \\
+           &- 2\sum_{k=0}^{m-1}\binom{2m}{2k+1} (2m \sigma)^{2k}\sum_{j=1}^{N}j^{2(m-k)-1} \leqslant 0, \\
+           p_{N,2m-1}([2m-1] \sigma) = &([2m-1] \sigma)^{2m-1} \\
+           &- 2\sum_{k=0}^{m-1}\binom{2m-1}{2k} ([2m-1] \sigma)^{2k}\sum_{j=1}^{N} j^{2(m-k)-1} \leqslant 0.
+        \end{align}
+        Both of these inequalities are easily seen to hold true since the sums over \( k \) contain exclusively positive terms (with an overall minus sign), and the \( k = m-1 \) term in both expressions exactly cancels the first and only positive term. 
+        The inequalities are also seen to saturate if and only if \( m = 1 \) in both the top (\( d=2 \) ) and the bottom (\( d=1 \)) line. &#65517;
+        </p>
+
+        <p align="justify">
+        <b>Lemma III (upper bound):</b> <em>The real positive root \( x_{N,d} \) of \( p_{N,d} \) satisfies \( x_{N,d} < dN(N+1) + \frac{(d-1)(d-2)}{12d} \). </em>
+        </p>
+
+        <p align="justify">
+        <b>Proof of Lemma III:</b> A qualified hypothesis (which will be shown true) is that the root asymptotically approaches (with \( \sigma = N(N+1) \) as before)
+        \[ x_{N,d} \sim d\sigma + \varepsilon_d, \] 
+        where \( \varepsilon_d \) is independent of \(N\). 
+        I make use of an asymptotic expansion (in \( N\)) of the real root and retain the three leading order terms in \(N\) in the binomial expansion of \( p_{N,d} \).
+        As such, while the LHS containes the two leading order terms
+        \[ (d\sigma + \varepsilon_d)^d \sim d^d \sigma^d + d^d \sigma^{d-1} \varepsilon_d, \] 
+        the three leading order terms from the RHS are:
+        \begin{align}
+           & \sum_{k=0}^{d}  \binom{d}{k} (d\sigma + \varepsilon_d)^k \left[1  - (-1)^{d-k} \right] \sum_{j=1}^N j^{d-k} \\
+            &\sim d^d \sigma^d + \frac{(d-1)(d-2)d^{d-2}\sigma^{d-1}}{12d} + (d-1)d^{d-1} \varepsilon_d.
+        \end{align}
+        When equating \( p_{N,d}(x) = 0 \) consistently to this order, we thus see that
+        \[ \varepsilon_d = \frac{(d-1)(d-2)}{12d}. \]
+        Here, I used the fact that \( \sum_{j=1}^N j^3 = (\sigma/2)^2 \).
+        The asymptotic solution is, by virtue of Lemma I, an upper bound on the root \( x_{N,d} \).
+        In fact, by employing the function AsymptoticSolve in Mathematica one can both verify the above and simultaneously find the subleading correction in the asymptotic expansion: 
+        \[ x_{N,d} = d\sigma + \varepsilon_d - \frac{(d-1)(d-2)(2d(d-2)-1)}{180 N^2 d^3} + \mathcal{O}(1/N^3), \]
+        which also shows that the correction is negative.  &#65517;
+        </p>
+
+        <p align="justify">
+        A useful observation can be made by employing clock arithmetic. 
+        I partition putative integer solutions in the congruence classes of \( \sigma = N(N+1) \). 
+        The integers can thus be expressed as the collection of congruence classes, \( \mathbb{Z} = \lbrace [0]_{\sigma}, [1]_{\sigma}, \dots, [\sigma-1]_{\sigma} \rbrace \), where \( [j]_{\sigma} = \lbrace m : m \equiv j~(\mathrm{mod}~\sigma) \rbrace \).
+        </p>
+
+        <p align="justify">
+        <b>Proposition I:</b> <em>Any integer root \( n \) of \( p_{N,d} \) must be an integer multiple of \( \sigma = N(N+1) \), i.e., \( n \in [0]_{\sigma}\). </em>
+        </p>
+
+        <p align="justify">
+        <b>Proof of Proposition I:</b> I prove the proposition by contradiction. 
+        As such, assume that the integral root of \( \tilde{p}_{N,2m} \) (the proof for \( p_{N,2m-1} \) is completely analogous) satisfies \( n \not\in [0]_{\sigma} \), i.e., there exists a \( j\in \lbrace 1, 2, \dots, \sigma-1 \rbrace \) such that \( n \in [j]_{\sigma}\). 
+        The condition that \( \tilde{p}_{N,2m}(n) = 0 \) is equivalent to
+        \[ n^{2m-1} = 2\sum_{k=0}^{m-1}\binom{2m}{2k+1} n^{2k}\sum_{j=1}^{N}j^{2(m-k)-1}. \]
+        Let's calculate the remainder (modulo \( \sigma\)) of both sides of this equation to enforce a contradiction. 
+        Since \( \sum_{j=1}^N j^{2l-1} \) is divisible by \(\sigma/2\) for all \( l\in \mathbb{Z}^+\) (showing this is a nice little exercise and apparently dates back to <a href="https://en.wikipedia.org/wiki/Faulhaber%27s_formula">Johann Faulhaber and 1631</a>) all terms on the RHS are divisible by \( \sigma \), so the right hand side is an element of \( [0]_{\sigma} \). 
+        Since \( n \in [j]_{\sigma} \), there exists an integer \(p\) such that \( n = p \sigma + j\). 
+        Using the binomial expansion on the LHS of the above equation then yields 
+        \[ n^{2m-1} = j^{2m-1} + \sum_{k=0}^{2m-2} \binom{2m-1}{k} (p\sigma)^{2m-1-k} j^k \equiv j^{2m-1}~(\mathrm{mod}~\sigma), \] 
+        which implies that \( n^{2m-1} \not\in [0]_{\sigma}\)
+        Here I used that  \( j\equiv 0 \Rightarrow j^a \equiv 0~(\mathrm{mod}~\sigma)\), so \(j^a \not\equiv 0 \Rightarrow j\not\equiv 0~(\mathrm{mod}~\sigma)\) for any positive integer \(a\). &#65517;
+        </p>
+     
+        <p align="justify">
+        We now have the building blocks to exclude a big chunk of the a priori solution space:
+        </p>
+     
+        <p align="justify">
+        <b>Theorem:</b> <em>The diophantine equation \( p_{N,d}(n) = 0 \) has the unique non-zero integral solution \( n = dN(N+1)\)  for all positive integers \( N \) and \( d \in \lbrace 1, 2 \rbrace\). 
+        For \( d \geqslant 3\) the equation has no non-zero integral solutions for \( d \leqslant d_{c}(N) \), where </em>
+        \[ d_{c}(N) = \Big\lfloor \frac12\left( 3 + 12N(N+1) + \sqrt{9(1+2N)^4-8} \right) \Big \rfloor \sim 3(1+2N)^2. \]
+        </p>
+
+        <p align="justify">
+        <b>Proof of Theorem:</b> Proposition I tells us that a putative integral solution must be of the form \( n = a\sigma \) for some positive integer \( a \), and Lemma II establishes that \( a > d \). 
+        The smallest possible integer multiple of \( \sigma \) is therefore \( n \geqslant (d+1)\sigma\). 
+        On the other hand, from the upper bound of Lemma III one has \( n < d\sigma + \frac{(d-1)(d-2)}{12d}\), which together imply that \( 12d \sigma < (d-1)(d-2) \). 
+        Isolating \( d \) then results in \( d \leqslant d_{c}(N) \), where \( d_c(N) \) is given above. &#65517;
+        </p>
+
+        <p align="justify">
+        In fact, enumerating the first few \( d_c(N) \) (see the table below) reveals that \( d_c \geqslant 26 \).
+        So this demonstrates the minimum dimension in which integer-sided hypercubes could exist that satisfy the volumetric diophantine equation presently studied (for <em>any</em> \(N\)), is 26 (still assuming \( d \geqslant 3 \) since \( d = 1 \) and  \( d = 2 \) have been fully solved).
+        As the expression for \( d_c(N) \) shows, however, the lower dimensional bound rapidly increases with \(N\).
+        For example, the dimension would have to be at least 1322 if you asked for solutions to the \( N = 10 \) problem.
+        One remark is in place before I release the (rest of the) air from the balloon.
+        </p>
+
+        <style>
+        table, th, td {
+           border: 3px solid black;
+           border-collapse: collapse;
+           font-size: 14px;
+        }
+        </style>
+        <table style="width:80%" align="center">
+        <tr>
+           <th>\( N \)</th>
+           <th>1</th>
+           <th>2</th>
+           <th>3</th>
+           <th>4</th>
+           <th>5</th>
+           <th>6</th>
+           <th>7</th>
+           <th>8</th>
+           <th>9</th>
+           <th>10</th>
+           <th>11</th>
+           <th>12</th>
+           <th>13</th>
+           <th>14</th>
+           <th>15</th>
+        </tr>
+        <tr>
+           <th>\( d_c(N) \)</th>
+           <th>26</th>
+           <th>74</th>
+           <th>146</th>
+           <th>242</th>
+           <th>362</th>
+           <th>506</th>
+           <th>674</th>
+           <th>866</th>
+           <th>1082</th>
+           <th>1322</th>
+           <th>1576</th>
+           <th>1874</th>
+           <th>2186</th>
+           <th>3266</th>
+           <th>3674</th>
+        </tr>
+        </table>
+
+        <p align="justify">
+        In <a href="https://en.wikipedia.org/wiki/Lander,_Parkin,_and_Selfridge_conjecture">1967 Lander, Parkin, and Selfridge (LPS) conjectured</a> that the diophantine equation 
+        \[ \sum_{i = 1}^N a_i^k = \sum_{j = 1}^M b_j^k, \] 
+        where \( a_i \neq b_j\) are all positive integers, only has solutions for \(M+N \geqslant k\). 
+        In terms of the diophantine equation \( p_{N,d}(n) = 0 \), this condition becomes \( 2N+1 \geqslant d \), which is easily seen to be inconsistent with \( d \geqslant d_c(N) \). 
+        Hence, if the LPS conjecture is true it follows that \( p_{N,d}(n) = 0 \) has no integral solutions for \( d \geqslant 3 \).             
+        </p>
+
+        <p align="justify">
+        As initially alluded to, after having typed up the above proofs, I stumbled upon <a href="https://arxiv.org/abs/1312.5943v2">arXiv:1312.5943</a>, in which S. Felten and S. M&uuml;ller-Stach prove the absence of solutions to the same equation, \( p_{N,d}(n) = 0 \), for <em>any</em> \( d\geqslant 3\). 
+        In this reference, the authors actually reach some of the same partial results as I did independently above, including Lemma I, Lemma III, and Proposition I. 
+        And apparently, the \( d=2 \) case was first studied by Georges Dostor in 1879 (the year A. Einstein was born)!
+        </p>
+
+        <p align="left">
+        <b>References / further reading:</b> <br>
+        \( \circ \) A. J. Wiles, <a href="https://staff.fnwi.uva.nl/a.l.kret/Galoistheorie/wiles.pdf"><em>Modular elliptic curves and Fermat's Last Theorem</em></a>, Annals of Mathematics <b>141</b>, 443 (1995) <br>
+        \( \circ \) S. Felten and S. M&uuml;ller-Stach, <a href="https://arxiv.org/abs/1312.5943v2"><em>A diophantine equation for sums of consecutive like powers</em></a>, arXiv:1312.5943 [math.NT], December 20, 2013 <br>
+        \( \circ \) L. J. Lander, T. R. Parkin, and J. L. Selfridge, <a href="https://www.ams.org/journals/mcom/1967-21-099/S0025-5718-1967-0222008-0/"><em>A survey of equal sums of like powers</em></a>, Math. Comp. <b>21</b>, 446 (1967) <br>
+        \( \circ \) D. E. Knuth, <a href="https://www.ams.org/journals/mcom/1993-61-203/S0025-5718-1993-1197512-7/"><em>Johann Faulhaber and sums of powers</em></a>, Math. Comp. <b>61</b>, 277 (1993) <br>
+        </p>
+
+    </div>
+  </div>
+
+  <div id="post4" class="tab-content">
+    <div class="card">
+      <h3>Game(s) of life</h3>
+      <h4>Cellular atuomata on Archimedan lattices, December 15, 2024</h4>
 
          <p align="justify">
             Welcome back! Long time, no see. In this post I will discuss cellular automata, which are discrete models of computation in the study of abstract machines and computational problems in theoretical computer science.  
@@ -488,10 +726,13 @@
             \( \circ \) S. Roberts, <a href="https://www.goodreads.com/book/show/22529392-genius-at-play"><em>Genius at play: the curious mind of John Horton Conway</em></a>, Bloomsbury USA. ISBN 978-1-62040-593-2 (2015)<br>
          </p>
 
-         <hr style="width:80%"> 
+    </div>
+  </div>
 
-         <h3>Aperiodic monotiles and the hat quasicrystal</h3>
-         <h4>On the discovery of the hat and thoughts about its realizations, September 7, 2024</h4>
+  <div id="post3" class="tab-content">
+    <div class="card">
+      <h3>Aperiodic monotiles and the hat quasicrystal</h3>
+      <h4>On the discovery of the hat and thoughts about its realizations, September 7, 2024</h4>
 
          <p align="justify">
             Hello, and thanks for visiting my blog. Today's post concerns a recent breakthrough within the mathematical theory of tilings.
@@ -616,10 +857,13 @@
             \( \circ \) J. W. Colson and W. R. Dichtel, <a href="https://www.nature.com/articles/nchem.1628"><em>Rationally synthesized two-dimensional polymers</em></a>, Nature Chemistry <b>5</b>, 453-465 (2013)<br>
          </p>
 
-         <hr style="width:80%"> 
+    </div>
+  </div>
 
-         <h3>Odd zeta function relations</h3>
-         <h4>From superconductivity to (new?) formulas for the zeta function of odd arguments, August 2, 2024</h4>
+  <div id="post2" class="tab-content">
+    <div class="card">
+      <h3>Odd zeta function relations</h3>
+      <h4>From superconductivity to (new?) formulas for the zeta function of odd arguments, August 2, 2024</h4>
 
          <p align="justify">
             Welcome back! In this post (disclaimer: targeted for the more mathematically inclined reader) I will explore a topic situated somewhere between physics and pure mathematics. 
@@ -745,8 +989,11 @@
             \( \circ \) D. Cvijovi&#263; and J. Klinowski, <a href="https://www.ams.org/journals/proc/1997-125-05/S0002-9939-97-03795-7/">New rapidly convergent series representations for \( \zeta(2n+1) \)</a>, Proc. Amer. Math. Soc. <b>125</b>, 1263-1271 (1997) <br>
          </p>
 
-         <hr style="width:80%"> 
+    </div>
+  </div>
 
+  <div id="post1" class="tab-content">
+    <div class="card">
         <h3>Counting loops</h3>
         <h4>A peek into the world of fully packed loops on a square lattice, June 29, 2024</h4>
             <p align="justify">
@@ -936,8 +1183,11 @@
                \( \circ \) E. Wynn, <a href="https://arxiv.org/abs/1402.0545"><em>Enumeration of nonisomorphic Hamiltonian cycles on square grid graphs</em></a>, arXiv:1402.0545 (2014) <br>
                \( \circ \) Z. Zhang and H. S. R&oslash;ising, <a href="https://iopscience.iop.org/article/10.1088/1751-8121/acc76f/meta"><em>The frustration-free fully packed loop model</em></a>, J. Phys. A: Math. Theor. <b>56</b> 194001 (2023) <br>
             </p>
-      </div>
     </div>
+  </div>
+
+</div>
+
     <div class="rightcolumn">
       <div class="card">
         <h2>About Me</h2>
@@ -945,12 +1195,14 @@
         <p> \( \circ \) Patent consultant at <a href=https://hoiberg.com/>H&#216;IBERG P/S</a> </p>
         <p> \( \circ \) <a href="http://ora.ox.ac.uk/objects/uuid:a8d4270f-a3e5-47cf-ae51-ca718705e31a">DPhil, theoretical physics, 2020</a>  </p>
         <p> \( \circ \) Physics interests: superconductivity, statistical mechanics, mathematical physics</p>
-        <p> \( \circ \) I enjoy  <a href="http://Numberphile.com">Numberphile</a> </p>
+        <p> \( \circ \) I enjoy  <a href="http://Numberphile.com">Numberphile</a>, <a href="https://www.3blue1brown.com/">3Blue1Brown</a>, and <a href="https://www.quantamagazine.org/">Quanta Magazine</a> </p>
         <p> \( \circ \) My <a href="http://en.wikipedia.org/wiki/Erd&ouml;s_number">Erd&ouml;s number</a> is 4 </p>
         <p> \( \circ \) Pop me an email at henrisro[at]proton.me  </p>
       </div>
       <div class="card">
         <h3>Book recommendations</h3>
+        <p> <a href="https://www.goodreads.com/book/show/208092.A_Survey_of_Metaphysics"><em>A Survey of Metaphysics</em></a> by Edward J. Lowe (2002)</p>
+        <img src="Lowe.png" width="128" alt="Lowe"> <br>
         <p> <a href="https://www.goodreads.com/book/show/9272903-game-of-life-cellular-automata"><em>Game of Life Cellular Automata</em></a> by Andrew Adamatzky (2010)</p>
         <img src="GoL.png" width="128" alt="GameofLife"> <br>
         <p> <a href="https://www.goodreads.com/book/show/415058.My_Best_Mathematical_and_Logic_Puzzles_Dover_Recreational_Math_"><em>My Best Mathematical and Logic Puzzles </em></a> by Martin Gardner (1994) </p>
@@ -988,3 +1240,12 @@
   <div class="footer">
     <a href="http://www.linkedin.com/in/henrisro92">LinkedIn</a>
   </div> 
+
+  <script>
+    function openPost(evt, postId) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+      document.getElementById(postId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+  </script>
