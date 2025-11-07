@@ -535,6 +535,22 @@
             I also recommend <a href="https://www.youtube.com/watch?v=7-97RhAZhXI">this video</a> about continuous and multi-dimensional generalizations of the Game of Life.
          </p>
 
+        <p align="justify">
+            <b>Update (November 7, 2025): </b> 
+            After months of searching and exploring, I finally managed to construct a glider gun!
+            It is a bit of a monster, stably emitting a small glider every 276th iteration. 
+            The construction comprises four big gliders, each bouncing between a pair of walls.
+            Two bouncing gliders are carefully phase shifted and adjusted to interact at a single point during every full bouncer period, causing the stable emission of a puffer as the fog of the interaction zone lifts.
+            A mirror symmetric partner construction ensures that two emitted puffers interact to emit two small gliders, one of which is intentionally absorbed by a blinker, and one sliding off to infinity.
+            The construction clearly has no analogue on the square lattice as non-orthogonal directions are exploited.
+            To the best of my knowledge, this is the first reported glider gun on a composite/Archimedean lattice, here using Conway's vanilla B3S23 rule.
+            While the bouncer walls and their relative positions were found using an evolutionary search algorithm, the glider gun was otherwise constructed manually by exploiting symmetries.
+            In analogy to the square lattice case, it may serve as a cornerstone in producing logical circuits and eventually proving Turing completeness.
+            My <a href="https://github.com/henrisro313/Games_of_life">GitHub repository</a> has been updated with the information needed to reproduce the glider gun, as well as some interesting configurations identified during the searches. 
+            Here is the monster:
+         </p>
+         <img src="GliderGun_p276.gif" width="500" alt="Glidergun" align="center">
+
          <p align="justify">
             John Horton Conway (1937-2020) was a fascinating character and mathematician. 
             As his biographer, Siobhan Roberts, described him: &#x2018;<em>John Horton Conway is perhaps the world's most lovable egomaniac. He is Archimedes, Mick Jagger, Salvador Dali, and Richard Feynman, all rolled into one.</em>&#x2019;
