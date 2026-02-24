@@ -62,7 +62,8 @@
   <div class="row">
     <div class="leftcolumn">
   <div class="tab-header">
-    <button class="tab-button active" onclick="openPost(event, 'post6')">Post 6</button>
+    <button class="tab-button active" onclick="openPost(event, 'post7')">Post 7</button>
+    <button class="tab-button" onclick="openPost(event, 'post6')">Post 6</button>
     <button class="tab-button" onclick="openPost(event, 'post5')">Post 5</button>
     <button class="tab-button" onclick="openPost(event, 'post4')">Post 4</button>
     <button class="tab-button" onclick="openPost(event, 'post3')">Post 3</button>
@@ -70,7 +71,158 @@
     <button class="tab-button" onclick="openPost(event, 'post1')">Post 1</button>
   </div>
 
-  <div id="post6" class="tab-content active">
+  <div id="post7" class="tab-content active">
+   <div class="card">
+     <h3>Sofas through tight corners</h3> 
+     <h4>The moving sofa problem in arbitrary-turn-angle corridors, February 24, 2026</h4>
+
+     <p align="justify">
+        Post 7 is here! Being in the midst of a moving situation, I have found myself thinking about moving sofas recently.
+        In 2024, <em>the moving sofa problem</em> was formally resolved, about 58 years after the problem first appeared in the literature. 
+        The problem has over the years generated quite some attention, and it has been described widely in popular science media (see, e.g., <a href="https://www.quantamagazine.org/the-largest-sofa-you-can-move-around-a-corner-20250214/">this article in Quanta Magazine</a> or <a href="https://www.numberphile.com/videos/the-moving-sofa-problem">this excellent Numberphile video</a>).
+        <a href="https://en.wikipedia.org/wiki/Moving_sofa_problem">The moving sofa problem</a> is simple to state: 
+      </p>
+
+      <p align="justify">
+         <em>What is the largest area of an object/sofa capable of moving through a corridor having unit width and one right-angle turn?</em>
+      </p>
+
+      <p align="justify">
+         The motion is assumed to take place in the plane. 
+         In addition to the constructive nature of the question (seeking possibly a unique shape in an infinte pool of shapes), the freedom that lies in the dynamical part of this problem (any translations and rotations) makes it very hard to prove optimality for any qualified candidate.
+         Yet, a breakthrough was made by Jineon Baek in 2024, with Gerver's long-standing sofa now finally proven to be optimal:
+      </p>
+
+      <img src="Baek_Gerver.png" width="200" alt="Gerver" align="center">
+
+     <p align="justify">
+        The moving sofa problem was first posed (at least in published writing) by Leo Moser in 1966 (see the reference list). 
+        A few years later John M. Hammersley proposed a relatively simple shape looking like an old telephone having the elegant area of \( \pi/2 + 2/\pi = 2.2074... \). 
+        <a href="https://mathworld.wolfram.com/HammersleySofa.html">Hammersley's shape</a> consists of two quarters of a unit-radius circle split apart by a concave shape constructed to be the difference between a rectangle and a half-circle with radius chosen to optimize the total area.
+        It is not hard to check that Hammersley's sofa by definition permits a unique path through the corridor.
+        While Hammersley's sofa winds around the corner, it remains in contact with corridor in at least five points of contact.
+     </p>
+      
+     <p align="justify">
+        Hammersley's sofa may appear to be a reasonable candidate for an optimal-area one. 
+        However, after having pondered carefully upon the problem for at least two decades, Joseph L. Gerver came up with an impressive candidate in 1992.
+        Gerver's sofa consists of 18 curve sections, stitching together solutions to various differential equations.
+        It has an area of 2.2195..., a mere 0.55 % improvement on Hammersley's sofa, and having a highly reminiscent, yet far more intricate shape.
+        Interestingly, Gerver's sofa has a peculiar rounding of two of the corners compared to Hammersley's sofa, leading to some degree of freedom in terms of its movement through the corner. 
+     </p>
+
+     <p align="justify">
+        While Gerver had thought carefully about local optimality in his solution, he was not able to prove that his sofa was optimal. 
+        It would take another 32 years with progress until optimality was finally proven. 
+        In 2024, Jineon Baek uploaded his impressive <a href="https://arxiv.org/abs/2411.19826">119-page work to arXiv</a> using a rigorous geometric/variational analysis, establishing that Gerver's sofa is indeed the solution to the moving sofa problem.
+     </p>
+
+      <p align="justify">
+         Here, I will pose a simple generalization of the moving sofa problem: allowing the corridor turn angle to be greater than 90 degrees.
+         The question is
+      </p>
+
+      <p align="justify">
+         <em>What is the largest area of an sofa capable of moving through a corridor having unit width and a turn of \( \varphi \) where \( \varphi \in (0, \pi/2] \)?</em>
+      </p>
+
+      <p align="justify">
+         I will derive simple bounds (an upper and a lower bound) on the optimal sofa in this generalized scenario. 
+         The deduced bounds follow from generalizing Hammersley's sofa constructions and upper bound arguments (which will be explained below).
+      </p>
+
+      <p align="justify">
+         Let us denote the corridor having two arms of unit width and turn angle \( \varphi \) by \( C_{\varphi} \).
+         The Hammersley sofa can quite easily be generalized to fit \( C_{\varphi} \). 
+         In Hammersley's design, when the sofa comes sliding in from the left towards the corner, it comes all the way over to touch the right arm before it can start rotating.
+         At this point, the rightmost inner corner of the sofa touches the inner corridor corner in such a way that the slope of the concave sofa curve matches the slope of the right corridor arm extending from the inner corridor corner.
+         We may hold onto these two properties when the turn angle is generalized.
+      </p>
+
+      <p align="justify">
+         To maintain the latter property, it is necessary to shift the centre of circle defining the concave sofa section so that the slope-matching feature is preserved by construction.
+         Additionally, to maintain the first property, we may simply extend the ends of the sofa with triangular pieces that by definition will touch the relevant corridor arm during the sliding motion.
+         This results in the shape shown below:
+      </p>
+
+     <img src="CorridorHammersleyGen.png" width="500" alt="Corridor" align="center">
+
+     <p align="justify">
+      The area of this generalized Hammersley sofa amounts to
+      \( A(r, \varphi) = \varphi + \tan\left( \frac{\pi}{2}-\varphi \right) + 2r\sin(\varphi) - \frac{r^2}{2}\left(2\varphi - \sin(2\varphi)\right) \). 
+      The radius that maximizes \(A(r, \varphi)\) is \(r^{\star}(\varphi) = \frac{2\sin(\varphi)}{2\varphi - \sin(2\varphi)}\), leading to the optimal area of the generalized Hammersley sofa:
+      \begin{equation}
+          A_\mathrm{L}(\varphi) = \varphi + \tan\left( \frac{\pi}{2}-\varphi \right) + \frac{2\sin^2(\varphi)}{2\varphi - \sin(2\varphi)}.
+      \end{equation}
+      The function \( A_\mathrm{L}(\varphi)\)  is a lower bound of the solution to the moving sofa problem in an angled corridor for all \(\varphi \in (0, \frac{\pi}{2}]\). 
+      The Hammersley case is reproduced at \(\varphi = \pi/2\): \( A_\mathrm{L}(\pi/2) = 2/\pi + \pi/2\).
+     </p>
+
+     <p align="justify">
+      <a href="https://math.stackexchange.com/questions/1847453/whats-the-upper-bound-for-sofa-problem">Hammersley also devised an upper bound</a> on the optimal sofa area in the \( \varphi = \pi/2 \) case.
+      His argument is simple and powerful, and it can straightforwardly be generalized to arbitrary turn angles.
+      Since the sofa must fit the left corridor arm, it must fit inside a(n infinite) strip of unit width. 
+      The sofa must also fit the corridor at any later point during the motion, in particular when the corridor has turned \( \varphi/2 \) in the stationary-sofa frame.
+      To accommodate both these constrains in a finite upper bound, we may seek the maximal-area intersection of the unit-width strip with the corridor turned by \( \varphi/2 \).
+      Said area is maximal just as the intersection is about to split up into two disconnected pieces by the inner corridor corner (we also generally require that the sofa is a connected piece):
+     </p>
+
+     <img src="UpperHammersleyGen.png" width="450" alt="UpperBound" align="center">
+
+     <p align="justify">
+      At this point, the intersection (shown in blue above) has an area of
+      \begin{equation}
+         A_\mathrm{U}(\varphi) = \frac{2}{\sin(\varphi/2)}.
+      \end{equation}
+      Hammersley's upper bound is recovered at \(\varphi = \pi/2\): \(A_\mathrm{U}(\pi/2) = 2\sqrt{2} = 2.8284...\).
+      Thus, we may conclude that the maximal area of a sofa capable of moving through \( C_{\varphi}\), \(\mu_S(\varphi)\), satisfies 
+      \begin{equation}
+         A_\mathrm{L}(\varphi) \leq \mu_S(\varphi) \leq A_\mathrm{U}(\varphi)
+      \end{equation}
+      Visually, these bounds leave a <em>critical sofa strip</em> in which the optimal sofa has to lie. 
+      Below, I have illustrated the critical sofa strip along with a couple of examples of the generalized Hammersley sofa:
+      </p>
+
+     <img src="SofaBounds.png" width="420" alt="SofaBounds" align="center">
+
+     <p align="justify">
+      One may also confirm that at small turn angles, \(A_\mathrm{L} \sim \frac{5}{2\varphi} +  \mathcal{O}(\varphi)\), whereas \(A_\mathrm{U} \sim \frac{4}{\varphi} + \mathcal{O}(\varphi)\), so we indeed have that \(A_\mathrm{L} < A_\mathrm{U}\) and moreover have constrained the precise power-law behaviour of \( \mu_S(\varphi) \sim 1/\varphi \) for small turn angles.
+     </p>
+
+     <p align="justify">
+      In the right-angle case, impressive efforts were made by Kallus & Romik in the past to push down the upper bound from Hammersley's \( 2\sqrt{2} = 2.8284... \) to \( 2.37 \) using  a computer-assisted scheme by intersecting finitely many rotated corridor constraints.
+      Subsequently, a powerful injectivity condition was later proven by Baek, resulting in an even stronger upper bound of \( 1+\pi^2/8 = 2.2337... \).
+      Both of these approaches may have generalizations to the general turn angle case.
+     </p>
+
+     <p align="justify">
+        Open questions:
+        <ul align="justify">
+           <li>Can the Kallus-Romik strategy be adopted to the present case, and can one use it to devise a numerical upper bound lower than \( A_{\mathrm{U}}(\varphi) \)?</li>
+           <li>Is there a Baek injectivity condition in the present case?</li>
+           <li>Does the shape of the optimal sofa change continuously with turn angle?</li>
+           <li>Can Gerver's construction be generalized to arbitrary turn angles?</li>
+        </ul>
+     </p>
+
+     <p align="justify">
+      Thanks to Dan Romik for comments relating to the material of this post.
+   </p>
+
+     <p align="left">
+       <b>References / further reading:</b> <br>
+       \( \circ \) L. Moser, <a href="https://doi.org/10.1137/1008074"><em>Moving Furniture Through a Hallway</em></a>, SIAM Review <b>8</b>, 381 (1966) <br>
+       \( \circ \) J. L. Gerver, <a href="https://doi.org/10.1007/BF02414066"><em>On moving a sofa around a corner</em></a>, Geometriae Dedicata <b>42</b> (1992) <br>
+       \( \circ \) J. M. Hammersley, <a href="https://doi.org/10.1007/BF00426226"><em>On the enfeeblement of mathematical skills by modern mathematics and by similar soft intellectual trash in schools and universities</em></a>, Educational Studies in Mathematics <b>1</b> (1968) <br>
+       \( \circ \) J. Baek, <a href="https://arxiv.org/abs/2411.19826"><em>Optimality of Gerver's Sofa</em></a>, arXiv:2411.19826 [math.MG], November 29, 2024 <br>
+       \( \circ \) Y. Kallus and D. Romik, <a href="https://www.sciencedirect.com/science/article/pii/S000187081830416X?via%3Dihub"><em>Improved upper bounds in the moving sofa problem</em></a>, Advances in Mathematics <b>340</b>, 960-982 (2018) <br>
+       \( \circ \) H. Bai and J. Bai, <a href="https://doi.org/10.59720/24-384"><em>Modeling the moving sofas in circular hallways using geometric methods</em></a>, Journal of Emerging Investigators <b>8</b> (2025)
+       </p>
+       
+   </div>
+ </div>
+
+  <div id="post6" class="tab-content">
     <div class="card">
       <h3>Inscribed squares of metals</h3>
       <h4>Fermi surface squares in two-dimensional metals, May 22, 2025</h4>
@@ -231,7 +383,7 @@
       <p align="justify">
          Tweaking the band structure of a metal is not as trivial as I have made it sound from theory, but there are definitely a wide range of tools that can be applied to tune a metal dispersion, such as: pressure (hydrostatic or uniaxial), chemical substitution, external magnetic or electric fields, twisting multilayered systems (Moire superlattices).
          The above ideas may or may not provide a possible direction to identify inscribed squares in Nature. At any rate I hope it stimulated your curiosity.
-         I round off this post with a couple of open questions building on the above ideas:
+         I round off this post with some open questions building on the above ideas:
          <ul align="justify">
             <li>Is it possible to design a dispersion with scattering peaks corresponding to an inscribed square (like the one above) in less symmetric scenarios, such as in two-fold symmetric (\(D_{2\mathrm{h}}\)) or in non-centrosymmetric crystals?</li>
             <li>Can one design a more robust experimental signature which is not sensitive to tiny distortions of the dispersion, such as a topologically rooted signature bearing inspiration from, e.g., <a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.130.096301">P. M. Tam and C. L. Kane (2023)?</a></li>
@@ -535,7 +687,7 @@
             I also recommend <a href="https://www.youtube.com/watch?v=7-97RhAZhXI">this video</a> about continuous and multi-dimensional generalizations of the Game of Life.
          </p>
 
-        <p align="justify">
+         <p align="justify">
             <b>Update (November 7, 2025): </b> 
             After months of searching and exploring, I finally managed to construct a glider gun!
             It is a bit of a monster, stably emitting a small glider every 276th iteration. 
@@ -549,7 +701,7 @@
             My <a href="https://github.com/henrisro313/Games_of_life">GitHub repository</a> has been updated with the information needed to reproduce the glider gun, as well as some interesting configurations identified during the searches. 
             Here is the monster:
          </p>
-         <img src="GliderGun_p276_opt2.gif" width="500" alt="Glidergun" align="center">
+         <img src="GliderGun_p276.gif" width="500" alt="Glidergun" align="center">
 
          <p align="justify">
             John Horton Conway (1937-2020) was a fascinating character and mathematician. 
@@ -899,7 +1051,7 @@
 
          <p align="justify">
             Let us start by recapitulating some basic properties of the zeta function.
-            For \( n > 1 \) the zeta function is defined as the infinte sum 
+            For \( n > 1 \) the zeta function is defined as the infinite sum 
             \[ \zeta(s) \equiv \sum_{n = 1}^{\infty} \frac{1}{n^s}. \] 
             Leonhard Euler proved in 1737 (see, e.g., John Derbyshire's <a href="https://www.goodreads.com/book/show/218392.Prime_Obsession"><em>Prime Obsession</em></a>) a staggering connection between the zeta function and the prime numbers: \( 1/\zeta(n) = \prod_{p \; \mathrm{prime}} (1-p^{-n}) \).
             And Bernhard Riemann demonstrated a connection between the nontrivial zeros of the analytically continued zeta function and the prime counting function in his <a href="https://www.claymath.org/collections/riemanns-1859-manuscript/">landmark paper from 1859</a>.
